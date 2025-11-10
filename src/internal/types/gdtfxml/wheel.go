@@ -8,10 +8,10 @@ type XMLWheel struct {
 }
 
 type XMLWheelSlot struct {
-	Name          string           `xml:",attr"`
-	Color         ColorCIE         `xml:",attr"`
-	Filter        XMLNodeReference `xml:",attr"` // ref to Physical/Filter
-	MediaFileName string           `xml:",attr"`
+	Name          string            `xml:",attr"`
+	Color         *ColorCIE         `xml:",attr,omitempty"`
+	Filter        *XMLNodeReference `xml:",attr,omitempty"` // ref to Physical/Filter
+	MediaFileName *string           `xml:",attr,omitempty"`
 }
 
 type XMLPrismFacet struct {

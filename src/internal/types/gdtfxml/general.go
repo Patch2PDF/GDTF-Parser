@@ -66,7 +66,7 @@ type ColorCIE struct {
 }
 
 func (dest *ColorCIE) UnmarshalXMLAttr(attr xml.Attr) error {
-	frags := strings.Split(attr.Value, ", ")
+	frags := strings.Split(attr.Value, ",")
 	if len(frags) != 3 {
 		return fmt.Errorf("invalid structure for ColorCIE")
 	}
@@ -163,7 +163,7 @@ type Vector3 struct {
 }
 
 func (dest *Vector3) UnmarshalXMLAttr(attr xml.Attr) error {
-	frags := strings.Split(attr.Value, ", ")
+	frags := strings.Split(attr.Value, ",")
 	if len(frags) != 3 {
 		return fmt.Errorf("invalid structure for Vector3")
 	}
