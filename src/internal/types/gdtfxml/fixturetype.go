@@ -1,6 +1,6 @@
 package XMLTypes
 
-type XMLFixtureType struct {
+type FixtureType struct {
 	FixtureTypeID    string    `xml:",attr"`
 	Name             string    `xml:",attr"`
 	ShortName        string    `xml:",attr"`
@@ -13,13 +13,13 @@ type XMLFixtureType struct {
 	CanHaveChildren  YesNoBool `xml:",attr"`
 	RefFT            *string   `xml:",attr"`
 
-	AttributeDefinitions XMLAttributeDefinitions `xml:"AttributeDefinitions"`
-	Wheels               []XMLWheel              `xml:"Wheels>Wheel"`
-	PhysicalDescriptions []PhysicalDescription   `xml:"PhysicalDescriptions"`
-	Models               []XMLModel              `xml:"Models>Model"`
-	Geometries           Geometries              `xml:"Geometries"`
-	DMXModes             []XMLDMXMode            `xml:"DMXModes>DMXMode"`
-	Revisions            []XMLRevision           `xml:"Revisions>Revision"`
-	FTPresets            []string                `xml:"FTPresets"`
-	Protocols            []string                `xml:"Protocols"`
+	AttributeDefinitions AttributeDefinitions  `xml:"AttributeDefinitions"`
+	Wheels               []Wheel               `xml:"Wheels>Wheel"`
+	PhysicalDescriptions []PhysicalDescription `xml:"PhysicalDescriptions"`
+	Models               []Model               `xml:"Models>Model"`
+	Geometries           Geometries            `xml:"Geometries"`
+	DMXModes             []DMXMode             `xml:"DMXModes>DMXMode"`
+	Revisions            []Revision            `xml:"Revisions>Revision"`
+	FTPresets            []string              `xml:"FTPresets"`
+	Protocols            []string              `xml:"Protocols"`
 }

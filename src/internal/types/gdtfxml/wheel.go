@@ -1,25 +1,25 @@
 package XMLTypes
 
-type XMLWheel struct {
+type Wheel struct {
 	Name             string `xml:",attr"`
-	WheelSlots       []XMLWheelSlot
-	PrismFacets      []XMLPrismFacet
-	AnimationSystems []XMLAnimationSystem
+	WheelSlots       []WheelSlot
+	PrismFacets      []PrismFacet
+	AnimationSystems []AnimationSystem
 }
 
-type XMLWheelSlot struct {
+type WheelSlot struct {
 	Name          string            `xml:",attr"`
 	Color         *ColorCIE         `xml:",attr,omitempty"`
 	Filter        *XMLNodeReference `xml:",attr,omitempty"` // ref to Physical/Filter
 	MediaFileName *string           `xml:",attr,omitempty"`
 }
 
-type XMLPrismFacet struct {
+type PrismFacet struct {
 	Color    ColorCIE `xml:",attr"`
 	Rotation Rotation `xml:",attr"`
 }
 
-type XMLAnimationSystem struct {
+type AnimationSystem struct {
 	P1      []float32 `xml:",attr"`
 	P2      []float32 `xml:",attr"`
 	P3      []float32 `xml:",attr"`

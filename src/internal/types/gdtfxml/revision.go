@@ -2,7 +2,7 @@ package XMLTypes
 
 import xmldatetime "github.com/datainq/xml-date-time"
 
-type XMLRevision struct {
+type Revision struct {
 	Text       string                 `xml:",attr"`
 	Date       xmldatetime.CustomTime `xml:"date,attr"`
 	UserID     uint                   `xml:",attr"`

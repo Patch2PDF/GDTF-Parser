@@ -1,37 +1,37 @@
 package XMLTypes
 
-type XMLAttributeDefinitions struct {
-	ActivationGroups []XMLActivationGroup `xml:"ActivationGroups>ActivationGroup"`
-	FeatureGroups    []XMLFeatureGroup    `xml:"FeatureGroups>FeatureGroup"`
-	Attributes       []XMLAttribute       `xml:"Attributes>Attribute"`
+type AttributeDefinitions struct {
+	ActivationGroups []ActivationGroup `xml:"ActivationGroups>ActivationGroup"`
+	FeatureGroups    []FeatureGroup    `xml:"FeatureGroups>FeatureGroup"`
+	Attributes       []Attribute       `xml:"Attributes>Attribute"`
 }
 
-type XMLActivationGroup struct {
+type ActivationGroup struct {
 	Name string `xml:",attr"`
 }
 
-type XMLFeatureGroup struct {
-	Name     string       `xml:",attr"`
-	Pretty   string       `xml:",attr"`
-	Features []XMLFeature `xml:"Feature"`
+type FeatureGroup struct {
+	Name     string    `xml:",attr"`
+	Pretty   string    `xml:",attr"`
+	Features []Feature `xml:"Feature"`
 }
 
-type XMLFeature struct {
+type Feature struct {
 	Name string `xml:",attr"`
 }
 
-type XMLAttribute struct {
-	Name             string               `xml:",attr"`
-	Pretty           string               `xml:",attr"`
-	ActivationGroup  XMLNodeReference     `xml:",attr"` // XMLActivationGroup
-	Feature          XMLNodeReference     `xml:",attr"` // XMLFeature
-	MainAttribute    XMLNodeReference     `xml:",attr"` // XMLAttribute
-	PhysicalUnit     string               `xml:",attr"`
-	Color            ColorCIE             `xml:",attr"`
-	SubPhysicalUnits []XMLSubPhysicalUnit `xml:"SubPhysicalUnits"`
+type Attribute struct {
+	Name             string            `xml:",attr"`
+	Pretty           string            `xml:",attr"`
+	ActivationGroup  XMLNodeReference  `xml:",attr"` // ActivationGroup
+	Feature          XMLNodeReference  `xml:",attr"` // Feature
+	MainAttribute    XMLNodeReference  `xml:",attr"` // Attribute
+	PhysicalUnit     string            `xml:",attr"`
+	Color            ColorCIE          `xml:",attr"`
+	SubPhysicalUnits []SubPhysicalUnit `xml:"SubPhysicalUnits"`
 }
 
-type XMLSubPhysicalUnit struct {
+type SubPhysicalUnit struct {
 	Type         string  `xml:",attr"`
 	PhysicalUnit string  `xml:",attr"`
 	PhysicalFrom float32 `xml:",attr"`

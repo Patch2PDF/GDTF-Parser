@@ -1,6 +1,6 @@
 package XMLTypes
 
-type XMLModel struct {
+type Model struct {
 	Name            string  `xml:",attr"`
 	Length          float32 `xml:",attr"`
 	Width           float32 `xml:",attr"`

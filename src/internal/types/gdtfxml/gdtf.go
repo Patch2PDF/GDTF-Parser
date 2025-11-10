@@ -1,6 +1,6 @@
 package XMLTypes
 
-type XMLGDTF struct {
+type GDTF struct {
 	DataVersion string `xml:",attr"`
-	FixtureType XMLFixtureType
+	FixtureType FixtureType
 }
