@@ -6,38 +6,60 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"path/filepath"
 
 	XMLTypes "github.com/Patch2PDF/GDTF-Parser/internal/types/gdtfxml"
+	Types "github.com/Patch2PDF/GDTF-Parser/types"
 )
 
-func main() {
-	gdtf, err := zip.OpenReader("test.gdtf")
+func ParseGDTF(filename string) (*Types.GDTF, error) {
+	if filepath.Ext(filename) != ".gdtf" {
+		return nil, fmt.Errorf("%s is not a GDTF file", filename)
+	}
+	// unzip gdtf file
+	gdtf, err := zip.OpenReader(filename)
 
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	defer gdtf.Close()
 
-	var fileNameMap map[string]int = make(map[string]int)
-	for index, file := range gdtf.File {
-		fileNameMap[file.Name] = index
+	// create map of files
+	var fileMap map[string]*zip.File = make(map[string]*zip.File)
+	for _, file := range gdtf.File {
+		fileMap[file.Name] = file
 	}
 
-	xmlFile, err := gdtf.File[fileNameMap["description.xml"]].Open()
+	xmlFile, err := fileMap["description.xml"].Open()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	defer xmlFile.Close()
 	data, err := io.ReadAll(xmlFile)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	var gdtfContent XMLTypes.XMLGDTF
+	var gdtfContent XMLTypes.GDTF
 	err = xml.Unmarshal(data, &gdtfContent)
+	if err != nil {
+		return nil, err
+	}
+
+	var parsedGDTF Types.GDTF
+
+	parsedGDTF.DataVersion = gdtfContent.DataVersion
+	// TODO: parse into desired destination type (with proper pointers as node references, etc.)
+
+	return &parsedGDTF, nil
+}
+
+func main() {
+	gdtf, err := ParseGDTF("test.gdtf")
 	if err != nil {
 		log.Fatal(err)
 	}
-	// fmt.Println(gdtfContent.FixtureType)
-	fmt.Printf("%+v\n", gdtfContent.FixtureType.Geometries)
+	fmt.Printf("%+v\n", *gdtf)
 }
+
+// TODO: func for 3d model parsing / conversion or rather a flag in upper `ParseGDTF`?
