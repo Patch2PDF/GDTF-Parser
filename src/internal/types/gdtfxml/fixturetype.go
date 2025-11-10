@@ -14,9 +14,9 @@ type XMLFixtureType struct {
 	RefFT            *string   `xml:",attr"`
 
 	AttributeDefinitions XMLAttributeDefinitions `xml:"AttributeDefinitions"`
-	Wheels               []XMLWheel              `xml:"Wheels"`
+	Wheels               []XMLWheel              `xml:"Wheels>Wheel"`
 	PhysicalDescriptions []PhysicalDescription   `xml:"PhysicalDescriptions"`
-	Models               []XMLModel              `xml:"Models"`
+	Models               []XMLModel              `xml:"Models>Model"`
 	Geometries           Geometries              `xml:"Geometries"`
 	DMXModes             []XMLDMXMode            `xml:"DMXModes>DMXMode"`
 	Revisions            []XMLRevision           `xml:"Revisions>Revision"`
