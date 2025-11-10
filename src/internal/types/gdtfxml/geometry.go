@@ -1,6 +1,5 @@
 package XMLTypes
 
-// TODO:
 type Geometries struct {
 	GeometryList          []Geometry          `xml:"Geometry"`
 	AxisList              []Axis              `xml:"Axis"`
@@ -27,8 +26,6 @@ type Geometry struct {
 	Model    string `xml:",attr"`
 	Position Matrix `xml:",attr"`
 	Geometries
-	// AxisList []Axis     `xml:"Axis"`
-	// Children Geometries `xml:",any"`
 }
 
 type Axis struct {
@@ -123,14 +120,61 @@ type GeometryReference struct {
 }
 
 type Break struct {
-	DMXOffset string `xml:",attr"`
-	DMXBreak  uint   `xml:",attr"`
+	DMXOffset DMXAddress `xml:",attr"`
+	DMXBreak  uint       `xml:",attr"`
 }
 
 type Laser struct {
+	Name              string           `xml:",attr"`
+	Model             string           `xml:",attr"`
+	Position          Matrix           `xml:",attr"`
+	ColorType         string           `xml:",attr"` // enum
+	Color             float32          `xml:",attr"` // Required if ColorType is “SingleWaveLength”; Unit:nm (nanometers)
+	OutputStrength    float32          `xml:",attr"`
+	Emitter           XMLNodeReference `xml:",attr"`
+	BeamDiameter      float32          `xml:",attr"`
+	BeamDivergenceMin float32          `xml:",attr"`
+	BeamDivergenceMax float32          `xml:",attr"`
+	ScanAnglePan      float32          `xml:",attr"`
+	ScanAngleTilt     float32          `xml:",attr"`
+	ScanSpeed         float32          `xml:",attr"`
+	Protocols         []LaserProtocol  `xml:"Protocol"`
+	Geometries
+}
+
+type LaserProtocol struct {
+	Name string `xml:",attr"`
 }
 
 type WiringObject struct {
+	Name              string     `xml:",attr"`
+	Model             string     `xml:",attr"`
+	ConnectorType     string     `xml:",attr"`
+	Position          Matrix     `xml:",attr"`
+	ComponentType     string     `xml:",attr"` //enum
+	SignalType        string     `xml:",attr"`
+	PinCount          int        `xml:",attr"`
+	ElectricalPayLoad float32    `xml:",attr"`
+	VoltageRangeMax   float32    `xml:",attr"`
+	VoltageRangeMin   float32    `xml:",attr"`
+	FrequencyRangeMax float32    `xml:",attr"`
+	FrequencyRangeMin float32    `xml:",attr"`
+	MaxPayLoad        float32    `xml:",attr"`
+	Voltage           float32    `xml:",attr"`
+	SignalLayer       int        `xml:",attr"`
+	CosPhi            float32    `xml:",attr"`
+	FuseCurrent       float32    `xml:",attr"` // in ampere
+	FuseRating        string     `xml:",attr"` //enum
+	Orientation       string     `xml:",attr"` //enum
+	WireGroup         string     `xml:",attr"`
+	PinPatches        []PinPatch `xml:"PinPatch"`
+	Geometries
+}
+
+type PinPatch struct {
+	ToWiringObject XMLNodeReference `xml:",attr"`
+	FromPin        int              `xml:",attr"`
+	ToPin          int              `xml:",attr"`
 }
 
 type Inventory struct {
@@ -142,9 +186,38 @@ type Inventory struct {
 }
 
 type Structure struct {
+	Name                      string           `xml:",attr"`
+	Model                     string           `xml:",attr"`
+	Position                  Matrix           `xml:",attr"`
+	LinkedGeometry            XMLNodeReference `xml:",attr"`
+	StructureType             string           `xml:",attr"` // enum
+	CrossSectionType          string           `xml:",attr"` // enum
+	CrossSectionHeight        float32          `xml:",attr"`
+	CrossSectionWallThickness float32          `xml:",attr"`
+	TrussCrossSection         string           `xml:",attr"`
+	Geometries
 }
 
 type Support struct {
+	Name             string  `xml:",attr"`
+	Model            string  `xml:",attr"`
+	Position         Matrix  `xml:",attr"`
+	SupportType      string  `xml:",attr"` //enum
+	RopeCrossSection string  `xml:",attr"`
+	RopeOffset       Vector3 `xml:",attr"`
+	CapacityX        float32 `xml:",attr"`
+	CapacityY        float32 `xml:",attr"`
+	CapacityZ        float32 `xml:",attr"`
+	CapacityXX       float32 `xml:",attr"`
+	CapacityYY       float32 `xml:",attr"`
+	CapacityZZ       float32 `xml:",attr"`
+	ResistanceX      float32 `xml:",attr"`
+	ResistanceY      float32 `xml:",attr"`
+	ResistanceZ      float32 `xml:",attr"`
+	ResistanceXX     float32 `xml:",attr"`
+	ResistanceYY     float32 `xml:",attr"`
+	ResistanceZZ     float32 `xml:",attr"`
+	Geometries
 }
 
 type Magnet struct {

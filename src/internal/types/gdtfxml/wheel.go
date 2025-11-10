@@ -7,17 +7,16 @@ type XMLWheel struct {
 	AnimationSystems []XMLAnimationSystem
 }
 
-// TODO:
 type XMLWheelSlot struct {
-	Name          string `xml:",attr"`
-	Color         string `xml:",attr"`
-	Filter        string `xml:",attr"` // TODO:
-	MediaFileName string `xml:",attr"`
+	Name          string           `xml:",attr"`
+	Color         ColorCIE         `xml:",attr"`
+	Filter        XMLNodeReference `xml:",attr"` // ref to Physical/Filter
+	MediaFileName string           `xml:",attr"`
 }
 
 type XMLPrismFacet struct {
-	Color    string `xml:",attr"`
-	Rotation string `xml:",attr"`
+	Color    ColorCIE `xml:",attr"`
+	Rotation Rotation `xml:",attr"`
 }
 
 type XMLAnimationSystem struct {

@@ -27,7 +27,7 @@ type XMLAttribute struct {
 	Feature          XMLNodeReference     `xml:",attr"` // XMLFeature
 	MainAttribute    XMLNodeReference     `xml:",attr"` // XMLAttribute
 	PhysicalUnit     string               `xml:",attr"`
-	Color            string               `xml:",attr"`
+	Color            ColorCIE             `xml:",attr"`
 	SubPhysicalUnits []XMLSubPhysicalUnit `xml:"SubPhysicalUnits"`
 }
 
