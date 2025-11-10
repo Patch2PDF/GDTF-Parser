@@ -41,7 +41,7 @@ type Filter struct {
 
 type ColorSpace struct {
 	Name       string   `xml:",attr"`
-	Mode       string   `xml:",attr"` //TODO: enum + default data (see https://www.gdtf.eu/gdtf/file-spec/physical-descriptions/#table-20-color-space-attributes)
+	Mode       string   `xml:",attr"` //enum + TODO: default data (see https://www.gdtf.eu/gdtf/file-spec/physical-descriptions/#table-20-color-space-attributes)
 	Red        ColorCIE `xml:",attr"`
 	Green      ColorCIE `xml:",attr"`
 	Blue       ColorCIE `xml:",attr"`

@@ -5,7 +5,7 @@ type XMLModel struct {
 	Length          float32 `xml:",attr"`
 	Width           float32 `xml:",attr"`
 	Height          float32 `xml:",attr"`
-	PrimitiveType   string  `xml:",attr"` // TODO: enum
+	PrimitiveType   string  `xml:",attr"` // enum
 	File            *string `xml:",attr"`
 	SVGOffsetX      float32 `xml:",attr"`
 	SVGOffsetY      float32 `xml:",attr"`

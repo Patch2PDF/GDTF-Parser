@@ -20,8 +20,8 @@ type XMLDMXChannel struct {
 
 type XMLLogicalChannel struct {
 	Attribute          XMLNodeReference     `xml:",attr"`
-	Snap               string               `xml:",attr"` // TODO: enum
-	Master             string               `xml:",attr"` // TODO: enum
+	Snap               string               `xml:",attr"` // enum
+	Master             string               `xml:",attr"` // enum
 	MibFade            float32              `xml:",attr"`
 	DMXChangeTimeLimit float32              `xml:",attr"`
 	ChannelFunctions   []XMLChannelFunction `xml:"ChannelFunction"`
@@ -63,7 +63,6 @@ type XMLChannelSet struct {
 
 type XMLSubChannelSet struct {
 	Name            string           `xml:",attr"`
-	DMXFrom         XMLDMXValue      `xml:",attr"`
 	PhysicalFrom    float32          `xml:",attr"`
 	PhysicalTo      float32          `xml:",attr"`
 	SubPhysicalUnit XMLNodeReference `xml:",attr"`
@@ -74,9 +73,25 @@ type XMLRelation struct {
 	Name     string           `xml:",attr"`
 	Master   XMLNodeReference `xml:",attr"`
 	Follower XMLNodeReference `xml:",attr"`
-	Type     string           `xml:",attr"` //TODO: enum with "Multiply" or "Override"
+	Type     string           `xml:",attr"` //enum with "Multiply" or "Override"
 }
 
-// TODO:
 type XMLFTMacro struct {
+	Name            string            `xml:",attr"`
+	ChannelFunction *XMLNodeReference `xml:",attr"`
+	MacroDMXs       []MacroDMX        `xml:"MacroDMX"`
+}
+
+type MacroDMX struct {
+	Steps []MacroDMXStep `xml:"MacroDMXStep"`
+}
+
+type MacroDMXStep struct {
+	Duration  float32         `xml:",attr"`
+	DMXValues []MacroDMXValue `xml:"DMXValue"`
+}
+
+type MacroDMXValue struct {
+	Value      XMLDMXValue      `xml:",attr"`
+	DMXChannel XMLNodeReference `xml:",attr"`
 }
