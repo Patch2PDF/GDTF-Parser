@@ -1,11 +1,11 @@
-package Type
+package Types
 
 type Model struct {
 	Name            string
 	Length          float32
 	Width           float32
 	Height          float32
-	PrimitiveType   string // TODO: enum
+	PrimitiveType   string // enum
 	File            *string
 	SVGOffsetX      float32
 	SVGOffsetY      float32

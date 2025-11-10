@@ -1,3 +1,3 @@
-package Type
+package Types
 
 //TODO:

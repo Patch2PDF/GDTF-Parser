@@ -1,4 +1,4 @@
-package Type
+package Types
 
 type FixtureType struct {
 	FixtureTypeID    string

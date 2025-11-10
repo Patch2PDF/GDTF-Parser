@@ -1,4 +1,4 @@
-package Type
+package Types
 
 type DMXMode struct {
 	Name        string
@@ -20,8 +20,8 @@ type DMXChannel struct {
 
 type LogicalChannel struct {
 	Attribute          *Attribute
-	Snap               string // TODO: enum
-	Master             string // TODO: enum
+	Snap               string // enum
+	Master             string // enum
 	MibFade            float32
 	DMXChangeTimeLimit float32
 	ChannelFunctions   []ChannelFunction
@@ -74,7 +74,7 @@ type Relation struct {
 	Name     string
 	Master   *DMXChannel
 	Follower *DMXChannel
-	Type     string //TODO: enum with "Multiply" or "Override"
+	Type     string //enum with "Multiply" or "Override"
 }
 
 // TODO:

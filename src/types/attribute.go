@@ -1,4 +1,4 @@
-package Type
+package Types
 
 type AttributeDefinitions struct {
 	ActivationGroups *map[string]ActivationGroup
