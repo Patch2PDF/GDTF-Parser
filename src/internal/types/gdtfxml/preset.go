@@ -1,3 +1,5 @@
 package XMLTypes
 
-//TODO:
+type Preset struct {
+	// not defined in standard yet
+}
