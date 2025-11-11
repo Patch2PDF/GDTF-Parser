@@ -3,7 +3,7 @@ package Types
 type DMXMode struct {
 	Name        string
 	Description string
-	Geometry    *Geometry
+	Geometry    NodeReference[GeometryNodeReference]
 	DMXChannels []DMXChannel
 	Relations   []Relation
 	FTMacros    []FTMacro
@@ -14,12 +14,12 @@ type DMXChannel struct {
 	Offset          []int
 	InitialFunction string //TODO:
 	Highlight       DMXValue
-	Geometry        *Geometry
+	Geometry        NodeReference[GeometryNodeReference]
 	LogicalChannels []LogicalChannel
 }
 
 type LogicalChannel struct {
-	Attribute          *Attribute
+	Attribute          NodeReference[Attribute]
 	Snap               string // enum
 	Master             string // enum
 	MibFade            float32
@@ -29,7 +29,7 @@ type LogicalChannel struct {
 
 type ChannelFunction struct {
 	Name              string
-	Attribute         *Attribute
+	Attribute         NodeReference[Attribute]
 	OriginalAttribute string
 	DMXFrom           DMXValue
 	Default           DMXValue
@@ -37,7 +37,7 @@ type ChannelFunction struct {
 	PhysicalTo        float32
 	RealFade          float32
 	RealAcceleration  float32
-	Wheel             *Wheel
+	Wheel             NodeReference[Wheel]
 	Emitter           NodeReference[Emitter]
 	Filter            NodeReference[Filter]
 	ColorSpace        NodeReference[ColorSpace]
@@ -58,15 +58,14 @@ type ChannelSet struct {
 	DMXFrom      DMXValue
 	PhysicalFrom float32
 	PhysicalTo   float32
-	WheelSlot    *WheelSlot
+	WheelSlot    NodeReference[WheelSlot]
 }
 
 type SubChannelSet struct {
 	Name            string
-	DMXFrom         DMXValue
 	PhysicalFrom    float32
 	PhysicalTo      float32
-	SubPhysicalUnit *SubPhysicalUnit
+	SubPhysicalUnit NodeReference[SubPhysicalUnit]
 	DMXProfile      NodeReference[DMXProfile]
 }
 
@@ -77,6 +76,22 @@ type Relation struct {
 	Type     string //enum with "Multiply" or "Override"
 }
 
-// TODO:
 type FTMacro struct {
+	Name            string
+	ChannelFunction NodeReference[ChannelFunction]
+	MacroDMXs       []MacroDMX
+}
+
+type MacroDMX struct {
+	Steps []MacroDMXStep
+}
+
+type MacroDMXStep struct {
+	Duration  float32
+	DMXValues []MacroDMXValue
+}
+
+type MacroDMXValue struct {
+	Value      DMXValue
+	DMXChannel NodeReference[DMXChannel]
 }
