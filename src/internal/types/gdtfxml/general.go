@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // TODO: DMXValue Type
@@ -59,10 +60,11 @@ func (b *YesNoBool) UnmarshalXMLAttr(attr xml.Attr) error {
 	return nil
 }
 
+// format xyY (X,Y,Y2)
 type ColorCIE struct {
-	x float32
-	y float32
-	Y float32
+	X  float32
+	Y  float32
+	Y2 float32
 }
 
 func (dest *ColorCIE) UnmarshalXMLAttr(attr xml.Attr) error {
@@ -74,17 +76,17 @@ func (dest *ColorCIE) UnmarshalXMLAttr(attr xml.Attr) error {
 	if err != nil {
 		return err
 	}
-	dest.x = float32(value)
+	dest.X = float32(value)
 	value, err = strconv.ParseFloat(frags[1], 32)
 	if err != nil {
 		return err
 	}
-	dest.y = float32(value)
+	dest.Y = float32(value)
 	value, err = strconv.ParseFloat(frags[2], 32)
 	if err != nil {
 		return err
 	}
-	dest.Y = float32(value)
+	dest.Y2 = float32(value)
 	return nil
 }
 
@@ -157,9 +159,9 @@ func (dest *Rotation) UnmarshalXMLAttr(attr xml.Attr) error {
 type FileReference = string // without extension and without path
 
 type Vector3 struct {
-	x float32
-	y float32
-	z float32
+	X float32
+	Y float32
+	Z float32
 }
 
 func (dest *Vector3) UnmarshalXMLAttr(attr xml.Attr) error {
@@ -171,18 +173,44 @@ func (dest *Vector3) UnmarshalXMLAttr(attr xml.Attr) error {
 	if err != nil {
 		return err
 	}
-	dest.x = float32(value)
+	dest.X = float32(value)
 	value, err = strconv.ParseFloat(frags[1], 32)
 	if err != nil {
 		return err
 	}
-	dest.y = float32(value)
+	dest.Y = float32(value)
 	value, err = strconv.ParseFloat(frags[2], 32)
 	if err != nil {
 		return err
 	}
-	dest.z = float32(value)
+	dest.Z = float32(value)
 	return nil
 }
 
-type Hex = int
+type Hex int
+
+func (h *Hex) UnmarshalXMLAttr(attr xml.Attr) error {
+	v, err := strconv.ParseInt(attr.Value, 0, 0)
+	if err != nil {
+		return err
+	}
+	*h = Hex(v)
+	return nil
+}
+
+type XMLTime struct {
+	time.Time
+}
+
+func (b *XMLTime) UnmarshalXMLAttr(attr xml.Attr) error {
+	value, err := time.Parse("2006-01-02T15:04:05", attr.Value)
+	if err != nil {
+		return err
+	}
+	b.Time = value
+	return nil
+}
+
+type ConvertToDestinationStruct[T any] interface {
+	Parse() T
+}
