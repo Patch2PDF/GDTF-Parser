@@ -214,3 +214,24 @@ func (b *XMLTime) UnmarshalXMLAttr(attr xml.Attr) error {
 type ConvertToDestinationStruct[T any] interface {
 	Parse() T
 }
+
+type ConvertToDestinationMapStruct[T any] interface {
+	Parse() T
+	ParseKey() string
+}
+
+func ParseList[Source ConvertToDestinationStruct[Destination], Destination any](source *[]Source) []Destination {
+	var destination []Destination = make([]Destination, len(*source))
+	for index, element := range *source {
+		destination[index] = element.Parse()
+	}
+	return destination
+}
+
+func ParseMap[Source ConvertToDestinationMapStruct[Destination], Destination any](source *[]Source) map[string]Destination {
+	destination := make(map[string]Destination)
+	for _, element := range *source {
+		destination[element.ParseKey()] = element.Parse()
+	}
+	return destination
+}

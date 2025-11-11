@@ -1,5 +1,7 @@
 package XMLTypes
 
+import Types "github.com/Patch2PDF/GDTF-Parser/types"
+
 type PhysicalDescription struct {
 	Emitters              []Emitter    `xml:"Emitters>Emitter"`
 	Filters               []Filter     `xml:"Filters>Filter"`
@@ -10,6 +12,11 @@ type PhysicalDescription struct {
 	CRIs                  []CRIGroup   `xml:"CRIs>CRIGroup"`
 	Connectors            []Connector  `xml:"Connectors>Connector"`
 	Properties            Properties   `xml:"Properties"`
+}
+
+// TODO:
+func (physicalDescription PhysicalDescription) Parse() Types.PhysicalDescription {
+	return Types.PhysicalDescription{}
 }
 
 type Emitter struct {

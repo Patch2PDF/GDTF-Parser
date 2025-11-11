@@ -1,5 +1,7 @@
 package XMLTypes
 
+import Types "github.com/Patch2PDF/GDTF-Parser/types"
+
 type Geometries struct {
 	GeometryList          []Geometry          `xml:"Geometry"`
 	AxisList              []Axis              `xml:"Axis"`
@@ -19,6 +21,13 @@ type Geometries struct {
 	StructureList         []Structure         `xml:"Structure"`
 	SupportList           []Support           `xml:"Support"`
 	MagnetList            []Magnet            `xml:"Magnet"`
+}
+
+// TODO:
+func (geometries Geometries) Parse() Types.Geometries {
+	return Types.Geometries{
+		// GeometryList: ,
+	}
 }
 
 type Geometry struct {

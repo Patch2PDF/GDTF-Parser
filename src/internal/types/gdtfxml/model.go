@@ -1,5 +1,7 @@
 package XMLTypes
 
+import Types "github.com/Patch2PDF/GDTF-Parser/types"
+
 type Model struct {
 	Name            string  `xml:",attr"`
 	Length          float32 `xml:",attr"`
@@ -13,4 +15,8 @@ type Model struct {
 	SVGSideOffsetY  float32 `xml:",attr"`
 	SVGFrontOffsetX float32 `xml:",attr"`
 	SVGFrontOffsetY float32 `xml:",attr"`
+}
+
+func (model Model) Parse() Types.Model {
+	return Types.Model(model) // for now, potentially need to adjust when parsing 3d model data
 }

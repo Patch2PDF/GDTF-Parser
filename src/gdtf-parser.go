@@ -46,9 +46,7 @@ func ParseGDTF(filename string) (*Types.GDTF, error) {
 		return nil, err
 	}
 
-	var parsedGDTF Types.GDTF
-
-	parsedGDTF.DataVersion = gdtfContent.DataVersion
+	parsedGDTF := gdtfContent.Parse()
 	// TODO: parse into desired destination type (with proper pointers as node references, etc.)
 
 	return &parsedGDTF, nil

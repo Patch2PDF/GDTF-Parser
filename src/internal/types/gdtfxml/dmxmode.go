@@ -1,5 +1,7 @@
 package XMLTypes
 
+import Types "github.com/Patch2PDF/GDTF-Parser/types"
+
 type DMXMode struct {
 	Name        string           `xml:",attr"`
 	Description string           `xml:",attr"`
@@ -7,6 +9,11 @@ type DMXMode struct {
 	DMXChannels []DMXChannel     `xml:"DMXChannels>DMXChannel"`
 	Relations   []Relation       `xml:"Relations>Relation"`
 	FTMacros    []FTMacro        `xml:"FTMacros>FTMacro"`
+}
+
+// TODO:
+func (dmxMode DMXMode) Parse() Types.DMXMode {
+	return Types.DMXMode{}
 }
 
 type DMXChannel struct {
