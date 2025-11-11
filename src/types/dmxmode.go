@@ -38,14 +38,14 @@ type ChannelFunction struct {
 	RealFade          float32
 	RealAcceleration  float32
 	Wheel             *Wheel
-	Emitter           string // TODO: link to emitter
-	Filter            string // TODO: link to filter
-	ColorSpace        string //TODO:
-	Gamut             string //TODO:
+	Emitter           NodeReference[Emitter]
+	Filter            NodeReference[Filter]
+	ColorSpace        NodeReference[ColorSpace]
+	Gamut             NodeReference[Gamut]
 	ModeMaster        string //TODO:
 	ModeFrom          DMXValue
 	ModeTo            DMXValue
-	DMXProfile        string  //TODO:
+	DMXProfile        NodeReference[DMXProfile]
 	Min               float32 // Fallback to PhysicalFrom if 0.0
 	Max               float32 // Fallback to PhysicalTo if 0.0
 	CustomName        string  // Default: Node Name of the Channel function Example: Head_Dimmer.Dimmer.Dimmer
@@ -67,7 +67,7 @@ type SubChannelSet struct {
 	PhysicalFrom    float32
 	PhysicalTo      float32
 	SubPhysicalUnit *SubPhysicalUnit
-	DMXProfile      string //TODO:
+	DMXProfile      NodeReference[DMXProfile]
 }
 
 type Relation struct {

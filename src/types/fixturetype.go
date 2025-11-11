@@ -14,12 +14,12 @@ type FixtureType struct {
 	RefFT            *string
 
 	AttributeDefinitions AttributeDefinitions
-	Wheels               *[]Wheel
-	PhysicalDescriptions *[]string
-	Models               *[]Model
-	Geometries           []Geometry
+	Wheels               []Wheel
+	PhysicalDescriptions []PhysicalDescription
+	Models               []Model
+	Geometries           Geometries
 	DMXModes             []DMXMode
-	Revisions            *[]string
+	Revisions            []Revision
 	FTPresets            *[]string
 	Protocols            *[]string
 }

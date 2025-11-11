@@ -25,11 +25,11 @@ type Feature struct {
 type Attribute struct {
 	Name             string
 	Pretty           string
-	ActivationGroup  *ActivationGroup
-	Feature          *Feature
-	MainAttribute    *Attribute
+	ActivationGroup  NodeReference[ActivationGroup]
+	Feature          NodeReference[Feature]
+	MainAttribute    NodeReference[Attribute]
 	PhysicalUnit     string
-	Color            string
+	Color            ColorCIE
 	SubPhysicalUnits *[]SubPhysicalUnit
 }
 
