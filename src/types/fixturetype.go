@@ -21,5 +21,5 @@ type FixtureType struct {
 	DMXModes             []DMXMode
 	Revisions            []Revision
 	FTPresets            *[]string
-	Protocols            *[]string
+	Protocols            Protocol
 }

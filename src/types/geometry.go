@@ -1,5 +1,26 @@
 package Types
 
+type GeometryNodeReference struct {
+	Geometry          Geometry
+	Axis              Axis
+	FilterBeam        FilterBeam
+	FilterColor       FilterColor
+	FilterGobo        FilterGobo
+	FilterShaper      FilterShaper
+	Beam              Beam
+	MediaServerLayer  MediaServerLayer
+	MediaServerCamera MediaServerCamera
+	MediaServerMaster MediaServerMaster
+	Display           Display
+	Laser             Laser
+	GeometryReference GeometryReference
+	WiringObject      WiringObject
+	Inventory         Inventory
+	Structure         Structure
+	Support           Support
+	Magnet            Magnet
+}
+
 // TODO:
 type Geometries struct {
 	GeometryList          []Geometry
@@ -79,7 +100,7 @@ type Beam struct {
 	BeamRadius       float32
 	BeamType         string
 	CRI              uint
-	EmitterSpectrum  XMLNodeReference
+	EmitterSpectrum  NodeReference[Emitter]
 	Geometries
 }
 
@@ -132,7 +153,7 @@ type Laser struct {
 	ColorType         string  // enum
 	Color             float32 // Required if ColorType is “SingleWaveLength”; Unit:nm (nanometers)
 	OutputStrength    float32
-	Emitter           XMLNodeReference
+	Emitter           NodeReference[Emitter]
 	BeamDiameter      float32
 	BeamDivergenceMin float32
 	BeamDivergenceMax float32
@@ -173,7 +194,7 @@ type WiringObject struct {
 }
 
 type PinPatch struct {
-	ToWiringObject XMLNodeReference
+	ToWiringObject NodeReference[WiringObject]
 	FromPin        int
 	ToPin          int
 }
@@ -190,7 +211,7 @@ type Structure struct {
 	Name                      string
 	Model                     string
 	Position                  Matrix
-	LinkedGeometry            XMLNodeReference
+	LinkedGeometry            string // for now (analyse if this can be a NodeReference instead)
 	StructureType             string // enum
 	CrossSectionType          string // enum
 	CrossSectionHeight        float32

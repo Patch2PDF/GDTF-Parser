@@ -1,5 +1,7 @@
 package XMLTypes
 
+import Types "github.com/Patch2PDF/GDTF-Parser/types"
+
 type Protocol struct {
 	RDM              []RDM              `xml:"FTRDM"`
 	ArtNet           []ArtNet           `xml:"Art-Net"`
@@ -7,6 +9,11 @@ type Protocol struct {
 	PosiStageNet     []PosiStageNet     `xml:"PosiStageNet"`
 	OpenSoundControl []OpenSoundControl `xml:"OpenSoundControl"`
 	CITP             []CITP             `xml:"CITP"`
+}
+
+// TODO:
+func (protocol Protocol) Parse() Types.Protocol {
+	return Types.Protocol{}
 }
 
 type RDM struct {

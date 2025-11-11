@@ -23,7 +23,7 @@ type FixtureType struct {
 	DMXModes             []DMXMode             `xml:"DMXModes>DMXMode"`
 	Revisions            []Revision            `xml:"Revisions>Revision"`
 	FTPresets            []string              `xml:"FTPresets"`
-	Protocols            []Protocol            `xml:"Protocols"`
+	Protocols            Protocol              `xml:"Protocols"`
 }
 
 func (fixtureType FixtureType) Parse() Types.FixtureType {
@@ -52,6 +52,6 @@ func (fixtureType FixtureType) Parse() Types.FixtureType {
 		DMXModes:             dmxModes,
 		Revisions:            revisions,
 		FTPresets:            nil, // not defined yet in spec
-		Protocols:            nil, // not defined yet in spec
+		Protocols:            fixtureType.Protocols.Parse(),
 	}
 }

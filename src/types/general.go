@@ -14,8 +14,6 @@ type DMXAddress struct {
 	Universe int
 }
 
-type XMLNodeReference = string
-
 // format xyY (X,Y,Y2)
 type ColorCIE struct {
 	X  float32
