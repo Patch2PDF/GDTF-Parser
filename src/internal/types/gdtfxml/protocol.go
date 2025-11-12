@@ -11,9 +11,15 @@ type Protocol struct {
 	CITP             []CITP             `xml:"CITP"`
 }
 
-// TODO:
 func (protocol Protocol) Parse() Types.Protocol {
-	return Types.Protocol{}
+	return Types.Protocol{
+		RDM:    ParseList(&protocol.RDM),
+		ArtNet: ParseList(&protocol.ArtNet),
+		SACN:   ParseList(&protocol.SACN),
+		// PosiStageNet: [],
+		// OpenSoundControl: [],
+		// CITP: [],
+	}
 }
 
 type RDM struct {
@@ -22,9 +28,24 @@ type RDM struct {
 	SoftwareVersions []RDMSoftwareVersion `xml:"SoftwareVersionID"`
 }
 
+func (protcol RDM) Parse() Types.RDM {
+	return Types.RDM{
+		ManufacturerID:   Types.Hex(protcol.ManufacturerID),
+		DeviceModelID:    Types.Hex(protcol.DeviceModelID),
+		SoftwareVersions: ParseList(&protcol.SoftwareVersions),
+	}
+}
+
 type RDMSoftwareVersion struct {
 	Value            Hex                 `xml:",attr"`
 	DMXPersonalities []RDMDMXPersonality `xml:"DMXPersonality"`
+}
+
+func (protcol RDMSoftwareVersion) Parse() Types.RDMSoftwareVersion {
+	return Types.RDMSoftwareVersion{
+		Value:            Types.Hex(protcol.Value),
+		DMXPersonalities: ParseList(&protcol.DMXPersonalities),
+	}
 }
 
 type RDMDMXPersonality struct {
@@ -32,9 +53,22 @@ type RDMDMXPersonality struct {
 	DMXMode XMLNodeReference `xml:",attr"` // reference to DMX Mode
 }
 
+func (protcol RDMDMXPersonality) Parse() Types.RDMDMXPersonality {
+	return Types.RDMDMXPersonality{
+		Value: Types.Hex(protcol.Value),
+		DMXMode: Types.NodeReference[Types.DMXMode]{
+			String: protcol.DMXMode,
+		},
+	}
+}
+
 type Map struct {
 	Key   uint `xml:",attr"` // Art-Net value
 	Value uint `xml:",attr"` // DMX value
+}
+
+func (object Map) Parse() Types.Map {
+	return Types.Map(object)
 }
 
 // key: artnet value, value: dmx value
@@ -42,8 +76,20 @@ type ArtNet struct {
 	Maps []Map `xml:"Map"`
 }
 
+func (protcol ArtNet) Parse() Types.ArtNet {
+	return Types.ArtNet{
+		Maps: ParseList(&protcol.Maps),
+	}
+}
+
 type SACN struct {
 	Maps []Map `xml:"Map"`
+}
+
+func (protcol SACN) Parse() Types.SACN {
+	return Types.SACN{
+		Maps: ParseList(&protcol.Maps),
+	}
 }
 
 type PosiStageNet struct {
