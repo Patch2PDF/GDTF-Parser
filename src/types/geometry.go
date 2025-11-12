@@ -21,7 +21,6 @@ type GeometryNodeReference struct {
 	Magnet            Magnet
 }
 
-// TODO:
 type Geometries struct {
 	GeometryList          []Geometry
 	AxisList              []Axis

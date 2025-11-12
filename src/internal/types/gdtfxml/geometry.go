@@ -23,10 +23,26 @@ type Geometries struct {
 	MagnetList            []Magnet            `xml:"Magnet"`
 }
 
-// TODO:
 func (geometries Geometries) Parse() Types.Geometries {
 	return Types.Geometries{
-		// GeometryList: ,
+		GeometryList:          ParseList(&geometries.GeometryList),
+		AxisList:              ParseList(&geometries.AxisList),
+		FilterBeamList:        ParseList(&geometries.FilterBeamList),
+		FilterColorList:       ParseList(&geometries.FilterColorList),
+		FilterGoboList:        ParseList(&geometries.FilterGoboList),
+		FilterShaperList:      ParseList(&geometries.FilterShaperList),
+		BeamList:              ParseList(&geometries.BeamList),
+		MediaServerLayerList:  ParseList(&geometries.MediaServerLayerList),
+		MediaServerCameraList: ParseList(&geometries.MediaServerCameraList),
+		MediaServerMasterList: ParseList(&geometries.MediaServerMasterList),
+		DisplayList:           ParseList(&geometries.DisplayList),
+		LaserList:             ParseList(&geometries.LaserList),
+		GeometryReferenceList: ParseList(&geometries.GeometryReferenceList),
+		WiringObjectList:      ParseList(&geometries.WiringObjectList),
+		InventoryList:         ParseList(&geometries.InventoryList),
+		StructureList:         ParseList(&geometries.StructureList),
+		SupportList:           ParseList(&geometries.SupportList),
+		MagnetList:            ParseList(&geometries.MagnetList),
 	}
 }
 
@@ -37,11 +53,29 @@ type Geometry struct {
 	Geometries
 }
 
+func (geometry Geometry) Parse() Types.Geometry {
+	return Types.Geometry{
+		Name:       geometry.Name,
+		Model:      geometry.Model,
+		Position:   Types.Matrix(geometry.Position),
+		Geometries: geometry.Geometries.Parse(),
+	}
+}
+
 type Axis struct {
 	Name     string `xml:",attr"`
 	Model    string `xml:",attr"`
 	Position Matrix `xml:",attr"`
 	Geometries
+}
+
+func (geometry Axis) Parse() Types.Axis {
+	return Types.Axis{
+		Name:       geometry.Name,
+		Model:      geometry.Model,
+		Position:   Types.Matrix(geometry.Position),
+		Geometries: geometry.Geometries.Parse(),
+	}
 }
 
 type FilterBeam struct {
@@ -51,11 +85,29 @@ type FilterBeam struct {
 	Geometries
 }
 
+func (geometry FilterBeam) Parse() Types.FilterBeam {
+	return Types.FilterBeam{
+		Name:       geometry.Name,
+		Model:      geometry.Model,
+		Position:   Types.Matrix(geometry.Position),
+		Geometries: geometry.Geometries.Parse(),
+	}
+}
+
 type FilterColor struct {
 	Name     string `xml:",attr"`
 	Model    string `xml:",attr"`
 	Position Matrix `xml:",attr"`
 	Geometries
+}
+
+func (geometry FilterColor) Parse() Types.FilterColor {
+	return Types.FilterColor{
+		Name:       geometry.Name,
+		Model:      geometry.Model,
+		Position:   Types.Matrix(geometry.Position),
+		Geometries: geometry.Geometries.Parse(),
+	}
 }
 
 type FilterGobo struct {
@@ -65,11 +117,29 @@ type FilterGobo struct {
 	Geometries
 }
 
+func (geometry FilterGobo) Parse() Types.FilterGobo {
+	return Types.FilterGobo{
+		Name:       geometry.Name,
+		Model:      geometry.Model,
+		Position:   Types.Matrix(geometry.Position),
+		Geometries: geometry.Geometries.Parse(),
+	}
+}
+
 type FilterShaper struct {
 	Name     string `xml:",attr"`
 	Model    string `xml:",attr"`
 	Position Matrix `xml:",attr"`
 	Geometries
+}
+
+func (geometry FilterShaper) Parse() Types.FilterShaper {
+	return Types.FilterShaper{
+		Name:       geometry.Name,
+		Model:      geometry.Model,
+		Position:   Types.Matrix(geometry.Position),
+		Geometries: geometry.Geometries.Parse(),
+	}
 }
 
 type Beam struct {
@@ -91,11 +161,43 @@ type Beam struct {
 	Geometries
 }
 
+func (geometry Beam) Parse() Types.Beam {
+	return Types.Beam{
+		Name:             geometry.Name,
+		Model:            geometry.Model,
+		Position:         Types.Matrix(geometry.Position),
+		LampType:         geometry.LampType,
+		PowerConsumption: geometry.PowerConsumption,
+		LuminousFlux:     geometry.LuminousFlux,
+		ColorTemperature: geometry.ColorTemperature,
+		BeamAngle:        geometry.BeamAngle,
+		FieldAngle:       geometry.FieldAngle,
+		ThrowRatio:       geometry.ThrowRatio,
+		RectangleRatio:   geometry.RectangleRatio,
+		BeamRadius:       geometry.BeamRadius,
+		BeamType:         geometry.BeamType,
+		CRI:              geometry.CRI,
+		EmitterSpectrum: Types.NodeReference[Types.Emitter]{
+			String: geometry.EmitterSpectrum,
+		},
+		Geometries: geometry.Geometries.Parse(),
+	}
+}
+
 type MediaServerLayer struct {
 	Name     string `xml:",attr"`
 	Model    string `xml:",attr"`
 	Position Matrix `xml:",attr"`
 	Geometries
+}
+
+func (geometry MediaServerLayer) Parse() Types.MediaServerLayer {
+	return Types.MediaServerLayer{
+		Name:       geometry.Name,
+		Model:      geometry.Model,
+		Position:   Types.Matrix(geometry.Position),
+		Geometries: geometry.Geometries.Parse(),
+	}
 }
 
 type MediaServerCamera struct {
@@ -105,11 +207,29 @@ type MediaServerCamera struct {
 	Geometries
 }
 
+func (geometry MediaServerCamera) Parse() Types.MediaServerCamera {
+	return Types.MediaServerCamera{
+		Name:       geometry.Name,
+		Model:      geometry.Model,
+		Position:   Types.Matrix(geometry.Position),
+		Geometries: geometry.Geometries.Parse(),
+	}
+}
+
 type MediaServerMaster struct {
 	Name     string `xml:",attr"`
 	Model    string `xml:",attr"`
 	Position Matrix `xml:",attr"`
 	Geometries
+}
+
+func (geometry MediaServerMaster) Parse() Types.MediaServerMaster {
+	return Types.MediaServerMaster{
+		Name:       geometry.Name,
+		Model:      geometry.Model,
+		Position:   Types.Matrix(geometry.Position),
+		Geometries: geometry.Geometries.Parse(),
+	}
 }
 
 type Display struct {
@@ -120,6 +240,15 @@ type Display struct {
 	Geometries
 }
 
+func (geometry Display) Parse() Types.Display {
+	return Types.Display{
+		Name:       geometry.Name,
+		Model:      geometry.Model,
+		Position:   Types.Matrix(geometry.Position),
+		Geometries: geometry.Geometries.Parse(),
+	}
+}
+
 type GeometryReference struct {
 	Name        string  `xml:",attr"`
 	Model       string  `xml:",attr"`
@@ -128,9 +257,26 @@ type GeometryReference struct {
 	Breaks      []Break `xml:"Break"`
 }
 
+func (geometry GeometryReference) Parse() Types.GeometryReference {
+	return Types.GeometryReference{
+		Name:        geometry.Name,
+		Model:       geometry.Model,
+		Position:    Types.Matrix(geometry.Position),
+		GeometryRef: geometry.GeometryRef, //TODO: add pointer field
+		Breaks:      ParseList(&geometry.Breaks),
+	}
+}
+
 type Break struct {
 	DMXOffset DMXAddress `xml:",attr"`
 	DMXBreak  uint       `xml:",attr"`
+}
+
+func (geometry Break) Parse() Types.Break {
+	return Types.Break{
+		DMXOffset: Types.DMXAddress(geometry.DMXOffset),
+		DMXBreak:  geometry.DMXBreak,
+	}
 }
 
 type Laser struct {
@@ -151,8 +297,34 @@ type Laser struct {
 	Geometries
 }
 
+func (geometry Laser) Parse() Types.Laser {
+	return Types.Laser{
+		Name:           geometry.Name,
+		Model:          geometry.Model,
+		Position:       Types.Matrix(geometry.Position),
+		ColorType:      geometry.ColorType,
+		Color:          geometry.Color,
+		OutputStrength: geometry.OutputStrength,
+		Emitter: Types.NodeReference[Types.Emitter]{
+			String: geometry.Emitter,
+		},
+		BeamDiameter:      geometry.BeamDiameter,
+		BeamDivergenceMin: geometry.BeamDivergenceMin,
+		BeamDivergenceMax: geometry.BeamDivergenceMax,
+		ScanAnglePan:      geometry.ScanAnglePan,
+		ScanAngleTilt:     geometry.ScanAngleTilt,
+		ScanSpeed:         geometry.ScanSpeed,
+		Protocols:         ParseList(&geometry.Protocols),
+		Geometries:        geometry.Geometries.Parse(),
+	}
+}
+
 type LaserProtocol struct {
 	Name string `xml:",attr"`
+}
+
+func (protocol LaserProtocol) Parse() Types.LaserProtocol {
+	return Types.LaserProtocol(protocol)
 }
 
 type WiringObject struct {
@@ -180,10 +352,47 @@ type WiringObject struct {
 	Geometries
 }
 
+func (geometry WiringObject) Parse() Types.WiringObject {
+	return Types.WiringObject{
+		Name:              geometry.Name,
+		Model:             geometry.Model,
+		ConnectorType:     geometry.ConnectorType,
+		Position:          Types.Matrix(geometry.Position),
+		ComponentType:     geometry.ComponentType,
+		SignalType:        geometry.SignalType,
+		PinCount:          geometry.PinCount,
+		ElectricalPayLoad: geometry.ElectricalPayLoad,
+		VoltageRangeMax:   geometry.VoltageRangeMax,
+		VoltageRangeMin:   geometry.VoltageRangeMin,
+		FrequencyRangeMax: geometry.FrequencyRangeMax,
+		FrequencyRangeMin: geometry.FrequencyRangeMin,
+		MaxPayLoad:        geometry.MaxPayLoad,
+		Voltage:           geometry.Voltage,
+		SignalLayer:       geometry.SignalLayer,
+		CosPhi:            geometry.CosPhi,
+		FuseCurrent:       geometry.FuseCurrent,
+		FuseRating:        geometry.FuseRating,
+		Orientation:       geometry.Orientation,
+		WireGroup:         geometry.WireGroup,
+		PinPatches:        ParseList(&geometry.PinPatches),
+		Geometries:        geometry.Geometries.Parse(),
+	}
+}
+
 type PinPatch struct {
 	ToWiringObject XMLNodeReference `xml:",attr"`
 	FromPin        int              `xml:",attr"`
 	ToPin          int              `xml:",attr"`
+}
+
+func (pinpatch PinPatch) Parse() Types.PinPatch {
+	return Types.PinPatch{
+		ToWiringObject: Types.NodeReference[Types.WiringObject]{
+			String: pinpatch.ToWiringObject,
+		},
+		FromPin: pinpatch.FromPin,
+		ToPin:   pinpatch.ToPin,
+	}
 }
 
 type Inventory struct {
@@ -192,6 +401,16 @@ type Inventory struct {
 	Position Matrix `xml:",attr"`
 	Count    int    `xml:",attr"`
 	Geometries
+}
+
+func (geometry Inventory) Parse() Types.Inventory {
+	return Types.Inventory{
+		Name:       geometry.Name,
+		Model:      geometry.Model,
+		Position:   Types.Matrix(geometry.Position),
+		Count:      geometry.Count,
+		Geometries: geometry.Geometries.Parse(),
+	}
 }
 
 type Structure struct {
@@ -205,6 +424,21 @@ type Structure struct {
 	CrossSectionWallThickness float32          `xml:",attr"`
 	TrussCrossSection         string           `xml:",attr"`
 	Geometries
+}
+
+func (geometry Structure) Parse() Types.Structure {
+	return Types.Structure{
+		Name:                      geometry.Name,
+		Model:                     geometry.Model,
+		Position:                  Types.Matrix(geometry.Position),
+		LinkedGeometry:            geometry.LinkedGeometry, // TODO: add pointer?
+		StructureType:             geometry.StructureType,
+		CrossSectionType:          geometry.CrossSectionType,
+		CrossSectionHeight:        geometry.CrossSectionHeight,
+		CrossSectionWallThickness: geometry.CrossSectionWallThickness,
+		TrussCrossSection:         geometry.TrussCrossSection,
+		Geometries:                geometry.Geometries.Parse(),
+	}
 }
 
 type Support struct {
@@ -229,9 +463,42 @@ type Support struct {
 	Geometries
 }
 
+func (geometry Support) Parse() Types.Support {
+	return Types.Support{
+		Name:             geometry.Name,
+		Model:            geometry.Model,
+		Position:         Types.Matrix(geometry.Position),
+		SupportType:      geometry.SupportType,
+		RopeCrossSection: geometry.RopeCrossSection,
+		RopeOffset:       Types.Vector3(geometry.RopeOffset),
+		CapacityX:        geometry.CapacityX,
+		CapacityY:        geometry.CapacityY,
+		CapacityZ:        geometry.CapacityZ,
+		CapacityXX:       geometry.CapacityXX,
+		CapacityYY:       geometry.CapacityYY,
+		CapacityZZ:       geometry.CapacityZZ,
+		ResistanceX:      geometry.ResistanceX,
+		ResistanceY:      geometry.ResistanceY,
+		ResistanceZ:      geometry.ResistanceZ,
+		ResistanceXX:     geometry.ResistanceXX,
+		ResistanceYY:     geometry.ResistanceYY,
+		ResistanceZZ:     geometry.ResistanceZZ,
+		Geometries:       geometry.Geometries.Parse(),
+	}
+}
+
 type Magnet struct {
 	Name     string `xml:",attr"`
 	Model    string `xml:",attr"`
 	Position Matrix `xml:",attr"`
 	Geometries
+}
+
+func (geometry Magnet) Parse() Types.Magnet {
+	return Types.Magnet{
+		Name:       geometry.Name,
+		Model:      geometry.Model,
+		Position:   Types.Matrix(geometry.Position),
+		Geometries: geometry.Geometries.Parse(),
+	}
 }
