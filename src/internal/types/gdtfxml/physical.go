@@ -14,9 +14,18 @@ type PhysicalDescription struct {
 	Properties            Properties   `xml:"Properties"`
 }
 
-// TODO:
 func (physicalDescription PhysicalDescription) Parse() Types.PhysicalDescription {
-	return Types.PhysicalDescription{}
+	return Types.PhysicalDescription{
+		Emitters:              ParseList(&physicalDescription.Emitters),
+		Filters:               ParseList(&physicalDescription.Filters),
+		ColorSpace:            physicalDescription.ColorSpace.Parse(),
+		AdditionalColorSpaces: ParseList(&physicalDescription.AdditionalColorSpaces),
+		Gamuts:                ParseList(&physicalDescription.Gamuts),
+		DMXProfiles:           ParseList(&physicalDescription.DMXProfiles),
+		CRIs:                  ParseList(&physicalDescription.CRIs),
+		Connectors:            ParseList(&physicalDescription.Connectors),
+		Properties:            physicalDescription.Properties.Parse(),
+	}
 }
 
 type Emitter struct {
@@ -27,6 +36,16 @@ type Emitter struct {
 	Measurements       []Measurement `xml:"Measurement"`
 }
 
+func (object Emitter) Parse() Types.Emitter {
+	return Types.Emitter{
+		Name:               object.Name,
+		Color:              object.Color.Parse(),
+		DominantWaveLength: object.DominantWaveLength,
+		DiodePart:          object.DiodePart,
+		Measurements:       ParseList(&object.Measurements),
+	}
+}
+
 type Measurement struct {
 	Phyiscal          float32             `xml:",attr"`
 	LuminousIntensity float32             `xml:",attr"`
@@ -35,15 +54,37 @@ type Measurement struct {
 	MeasurementPoints *[]MeasurementPoint `xml:"MeasurementPoint"`
 }
 
+func (object Measurement) Parse() Types.Measurement {
+	return Types.Measurement{
+		Phyiscal:          object.Phyiscal,
+		LuminousIntensity: object.LuminousIntensity,
+		Transmission:      object.Transmission,
+		InterpolationTo:   object.InterpolationTo,
+		MeasurementPoints: ParseList(object.MeasurementPoints),
+	}
+}
+
 type MeasurementPoint struct {
 	WaveLength float32 `xml:",attr"`
 	Energy     float32 `xml:",attr"`
+}
+
+func (object MeasurementPoint) Parse() Types.MeasurementPoint {
+	return Types.MeasurementPoint(object)
 }
 
 type Filter struct {
 	Name         string        `xml:",attr"`
 	Color        ColorCIE      `xml:",attr"`
 	Measurements []Measurement `xml:"Measurement"`
+}
+
+func (object Filter) Parse() Types.Filter {
+	return Types.Filter{
+		Name:         object.Name,
+		Color:        Types.ColorCIE(object.Color),
+		Measurements: ParseList(&object.Measurements),
+	}
 }
 
 type ColorSpace struct {
@@ -55,14 +96,39 @@ type ColorSpace struct {
 	WhitePoint ColorCIE `xml:",attr"`
 }
 
+func (object ColorSpace) Parse() Types.ColorSpace {
+	return Types.ColorSpace{
+		Name:       object.Name,
+		Mode:       object.Mode,
+		Red:        Types.ColorCIE(object.Red),
+		Green:      Types.ColorCIE(object.Green),
+		Blue:       Types.ColorCIE(object.Blue),
+		WhitePoint: Types.ColorCIE(object.WhitePoint),
+	}
+}
+
 type Gamut struct {
 	Name   string     `xml:",attr"`
 	Points []ColorCIE `xml:",attr"`
 }
 
+func (object Gamut) Parse() Types.Gamut {
+	return Types.Gamut{
+		Name:   object.Name,
+		Points: ParseList(&object.Points),
+	}
+}
+
 type DMXProfile struct {
 	Name   string  `xml:",attr"`
 	Points []Point `xml:"Point"`
+}
+
+func (object DMXProfile) Parse() Types.DMXProfile {
+	return Types.DMXProfile{
+		Name:   object.Name,
+		Points: ParseList(&object.Points),
+	}
 }
 
 type Point struct {
@@ -73,14 +139,29 @@ type Point struct {
 	CFC3          float32 `xml:",attr"`
 }
 
+func (object Point) Parse() Types.Point {
+	return Types.Point(object)
+}
+
 type CRIGroup struct {
 	ColorTemperature float32 `xml:",attr"`
 	CRIs             *[]CRI  `xml:"CRI"`
 }
 
+func (object CRIGroup) Parse() Types.CRIGroup {
+	return Types.CRIGroup{
+		ColorTemperature: object.ColorTemperature,
+		CRIs:             ParseList(object.CRIs),
+	}
+}
+
 type CRI struct {
 	CES string `xml:",attr"`
 	CRI uint   `xml:",attr"`
+}
+
+func (object CRI) Parse() Types.CRI {
+	return Types.CRI(object)
 }
 
 type Connector struct {
@@ -91,11 +172,24 @@ type Connector struct {
 	Length   float32 `xml:",attr"` // obsolete
 }
 
+func (object Connector) Parse() Types.Connector {
+	return Types.Connector(object)
+}
+
 type Properties struct {
 	OperatingTemperature *OperatingTemperature `xml:"OperatingTemperature"`
 	Weight               *Weight               `xml:"Weight"`
 	PowerConsumption     any                   `xml:"PowerConsumption"`
 	LegHeight            *LegHeight            `xml:"LegHeight"`
+}
+
+func (object Properties) Parse() Types.Properties {
+	return Types.Properties{
+		OperatingTemperature: (*Types.OperatingTemperature)(object.OperatingTemperature),
+		Weight:               (*Types.Weight)(object.Weight),
+		PowerConsumption:     object.PowerConsumption,
+		LegHeight:            (*Types.LegHeight)(object.LegHeight),
+	}
 }
 
 type OperatingTemperature struct {

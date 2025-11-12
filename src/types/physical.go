@@ -25,7 +25,7 @@ type Measurement struct {
 	LuminousIntensity float32
 	Transmission      float32
 	InterpolationTo   string
-	MeasurementPoints *[]MeasurementPoint
+	MeasurementPoints []MeasurementPoint
 }
 
 type MeasurementPoint struct {
@@ -68,7 +68,7 @@ type Point struct {
 
 type CRIGroup struct {
 	ColorTemperature float32
-	CRIs             *[]CRI
+	CRIs             []CRI
 }
 
 type CRI struct {

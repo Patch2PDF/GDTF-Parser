@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	Types "github.com/Patch2PDF/GDTF-Parser/types"
 )
 
 // TODO: DMXValue Type
@@ -65,6 +67,10 @@ type ColorCIE struct {
 	X  float32
 	Y  float32
 	Y2 float32
+}
+
+func (object ColorCIE) Parse() Types.ColorCIE {
+	return Types.ColorCIE(object)
 }
 
 func (dest *ColorCIE) UnmarshalXMLAttr(attr xml.Attr) error {
