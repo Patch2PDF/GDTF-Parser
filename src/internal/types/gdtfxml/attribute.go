@@ -9,13 +9,10 @@ type AttributeDefinitions struct {
 }
 
 func (attr AttributeDefinitions) Parse() Types.AttributeDefinitions {
-	activationGroups := ParseMap(&attr.ActivationGroups)
-	featureGroups := ParseMap(&attr.FeatureGroups)
-	attributes := ParseMap(&attr.Attributes)
 	return Types.AttributeDefinitions{
-		ActivationGroups: &activationGroups,
-		FeatureGroups:    featureGroups,
-		Attributes:       attributes,
+		ActivationGroups: ParseList(&attr.ActivationGroups),
+		FeatureGroups:    ParseList(&attr.FeatureGroups),
+		Attributes:       ParseList(&attr.Attributes),
 	}
 }
 
@@ -40,11 +37,10 @@ type FeatureGroup struct {
 }
 
 func (attr FeatureGroup) Parse() Types.FeatureGroup {
-	features := ParseMap(&attr.Features)
 	return Types.FeatureGroup{
 		Name:     attr.Name,
 		Pretty:   attr.Pretty,
-		Features: features,
+		Features: ParseList(&attr.Features),
 	}
 }
 

@@ -1,9 +1,19 @@
 package Types
 
 type AttributeDefinitions struct {
-	ActivationGroups *map[string]ActivationGroup
-	FeatureGroups    map[string]FeatureGroup
-	Attributes       map[string]Attribute
+	ActivationGroups []*ActivationGroup
+	FeatureGroups    []*FeatureGroup
+	Attributes       []*Attribute
+}
+
+func (obj *AttributeDefinitions) CreateReferencePointer() {
+	CreateReferencePointers(&obj.ActivationGroups)
+	CreateReferencePointers(&obj.FeatureGroups)
+	CreateReferencePointers(&obj.Attributes)
+}
+
+func (obj *AttributeDefinitions) ResolveReference() {
+	ResolveReferences(&obj.Attributes)
 }
 
 type ActivationGroup struct {
@@ -11,10 +21,20 @@ type ActivationGroup struct {
 	Attributes []*Attribute
 }
 
+func (obj *ActivationGroup) CreateReferencePointer() {
+	refPointers.ActivationGroups[obj.Name] = obj
+}
+
 type FeatureGroup struct {
 	Name     string
 	Pretty   string
-	Features map[string]Feature
+	Features []*Feature
+}
+
+func (obj *FeatureGroup) CreateReferencePointer() {
+	for _, element := range obj.Features {
+		refPointers.Features[obj.Name+"."+element.Name] = element
+	}
 }
 
 type Feature struct {
@@ -30,7 +50,31 @@ type Attribute struct {
 	MainAttribute    NodeReference[Attribute]
 	PhysicalUnit     string
 	Color            ColorCIE
-	SubPhysicalUnits *[]SubPhysicalUnit
+	SubPhysicalUnits *[]*SubPhysicalUnit
+}
+
+func (obj *Attribute) CreateReferencePointer() {
+	refPointers.Attributes[obj.Name] = obj
+	// TODO: find out reference name for SubPhysicalUnits
+	// for _, element := range *obj.SubPhysicalUnits {
+	// 	refPointers.SubPhysicalUnits[obj.Name + "." + element]
+	// }
+}
+
+func (obj *Attribute) ResolveReference() {
+	if obj.ActivationGroup.String != "" {
+		obj.ActivationGroup.Ptr = refPointers.ActivationGroups[obj.ActivationGroup.String]
+		refPointers.ActivationGroups[obj.ActivationGroup.String].Attributes =
+			append(refPointers.ActivationGroups[obj.ActivationGroup.String].Attributes, obj)
+	}
+	if obj.Feature.String != "" {
+		obj.Feature.Ptr = refPointers.Features[obj.Feature.String]
+		refPointers.Features[obj.Feature.String].Attributes =
+			append(refPointers.Features[obj.Feature.String].Attributes, obj)
+	}
+	if obj.MainAttribute.String != "" {
+		obj.MainAttribute.Ptr = refPointers.Attributes[obj.MainAttribute.String]
+	}
 }
 
 type SubPhysicalUnit struct {
