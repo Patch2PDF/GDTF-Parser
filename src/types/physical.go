@@ -1,15 +1,23 @@
 package Types
 
 type PhysicalDescription struct {
-	Emitters              []Emitter
-	Filters               []Filter
-	ColorSpace            ColorSpace
-	AdditionalColorSpaces []ColorSpace
-	Gamuts                []Gamut
-	DMXProfiles           []DMXProfile
-	CRIs                  []CRIGroup
-	Connectors            []Connector
-	Properties            Properties
+	Emitters              []*Emitter
+	Filters               []*Filter
+	ColorSpace            *ColorSpace
+	AdditionalColorSpaces []*ColorSpace
+	Gamuts                []*Gamut
+	DMXProfiles           []*DMXProfile
+	CRIs                  []*CRIGroup
+	Connectors            []*Connector
+	Properties            *Properties
+}
+
+func (obj *PhysicalDescription) CreateReferencePointer() {
+	CreateReferencePointers(&obj.Emitters)
+	CreateReferencePointers(&obj.Filters)
+	// CreateReferencePointers(&obj.AdditionalColorSpaces) // TODO: find out how they differentiate between Main and additional in references
+	CreateReferencePointers(&obj.Gamuts)
+	CreateReferencePointers(&obj.DMXProfiles)
 }
 
 type Emitter struct {
@@ -17,7 +25,11 @@ type Emitter struct {
 	Color              ColorCIE
 	DominantWaveLength float32
 	DiodePart          string
-	Measurements       []Measurement
+	Measurements       []*Measurement
+}
+
+func (obj *Emitter) CreateReferencePointer() {
+	refPointers.Emitters[obj.Name] = obj
 }
 
 type Measurement struct {
@@ -25,7 +37,7 @@ type Measurement struct {
 	LuminousIntensity float32
 	Transmission      float32
 	InterpolationTo   string
-	MeasurementPoints []MeasurementPoint
+	MeasurementPoints []*MeasurementPoint
 }
 
 type MeasurementPoint struct {
@@ -36,7 +48,11 @@ type MeasurementPoint struct {
 type Filter struct {
 	Name         string
 	Color        ColorCIE
-	Measurements []Measurement
+	Measurements []*Measurement
+}
+
+func (obj *Filter) CreateReferencePointer() {
+	refPointers.Filters[obj.Name] = obj
 }
 
 type ColorSpace struct {
@@ -50,12 +66,20 @@ type ColorSpace struct {
 
 type Gamut struct {
 	Name   string
-	Points []ColorCIE
+	Points []*ColorCIE
+}
+
+func (obj *Gamut) CreateReferencePointer() {
+	refPointers.Gamuts[obj.Name] = obj
 }
 
 type DMXProfile struct {
 	Name   string
-	Points []Point
+	Points []*Point
+}
+
+func (obj *DMXProfile) CreateReferencePointer() {
+	refPointers.DMXProfiles[obj.Name] = obj
 }
 
 type Point struct {
@@ -68,7 +92,7 @@ type Point struct {
 
 type CRIGroup struct {
 	ColorTemperature float32
-	CRIs             []CRI
+	CRIs             []*CRI
 }
 
 type CRI struct {

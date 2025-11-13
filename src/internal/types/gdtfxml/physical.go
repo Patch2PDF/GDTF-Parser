@@ -15,16 +15,18 @@ type PhysicalDescription struct {
 }
 
 func (physicalDescription PhysicalDescription) Parse() Types.PhysicalDescription {
+	properties := physicalDescription.Properties.Parse()
+	colorSpace := physicalDescription.ColorSpace.Parse()
 	return Types.PhysicalDescription{
 		Emitters:              ParseList(&physicalDescription.Emitters),
 		Filters:               ParseList(&physicalDescription.Filters),
-		ColorSpace:            physicalDescription.ColorSpace.Parse(),
+		ColorSpace:            &colorSpace,
 		AdditionalColorSpaces: ParseList(&physicalDescription.AdditionalColorSpaces),
 		Gamuts:                ParseList(&physicalDescription.Gamuts),
 		DMXProfiles:           ParseList(&physicalDescription.DMXProfiles),
 		CRIs:                  ParseList(&physicalDescription.CRIs),
 		Connectors:            ParseList(&physicalDescription.Connectors),
-		Properties:            physicalDescription.Properties.Parse(),
+		Properties:            &properties,
 	}
 }
 
