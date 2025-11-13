@@ -27,11 +27,6 @@ type FixtureType struct {
 }
 
 func (fixtureType FixtureType) Parse() Types.FixtureType {
-	wheels := ParseList(&fixtureType.Wheels)
-	physicalDescriptions := ParseList(&fixtureType.PhysicalDescriptions)
-	models := ParseList(&fixtureType.Models)
-	dmxModes := ParseList(&fixtureType.DMXModes)
-	revisions := ParseList(&fixtureType.Revisions)
 	return Types.FixtureType{
 		FixtureTypeID:        fixtureType.FixtureTypeID,
 		Name:                 fixtureType.Name,
@@ -45,12 +40,12 @@ func (fixtureType FixtureType) Parse() Types.FixtureType {
 		CanHaveChildren:      bool(fixtureType.CanHaveChildren),
 		RefFT:                fixtureType.RefFT,
 		AttributeDefinitions: fixtureType.AttributeDefinitions.Parse(),
-		Wheels:               wheels,
-		PhysicalDescriptions: physicalDescriptions,
-		Models:               models,
+		Wheels:               ParseList(&fixtureType.Wheels),
+		PhysicalDescriptions: ParseList(&fixtureType.PhysicalDescriptions),
+		Models:               ParseList(&fixtureType.Models),
 		Geometries:           fixtureType.Geometries.Parse(),
-		DMXModes:             dmxModes,
-		Revisions:            revisions,
+		DMXModes:             ParseList(&fixtureType.DMXModes),
+		Revisions:            ParseList(&fixtureType.Revisions),
 		FTPresets:            nil, // not defined yet in spec
 		Protocols:            fixtureType.Protocols.Parse(),
 	}
