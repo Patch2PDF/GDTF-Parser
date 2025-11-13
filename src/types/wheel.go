@@ -1,17 +1,32 @@
 package Types
 
 type Wheel struct {
-	Name             string
-	WheelSlots       []WheelSlot
-	PrismFacets      []PrismFacet
-	AnimationSystems []AnimationSystem
+	Name       string
+	WheelSlots []*WheelSlot
+}
+
+func (obj *Wheel) CreateReferencePointer() {
+	refPointers.Wheels[obj.Name] = obj
+	for _, element := range obj.WheelSlots {
+		refPointers.WheelSlots[obj.Name+"."+element.Name] = element
+	}
+}
+
+func (obj *Wheel) ResolveReference() {
+	ResolveReferences(&obj.WheelSlots)
 }
 
 type WheelSlot struct {
-	Name          string
-	Color         ColorCIE
-	Filter        NodeReference[Filter] // ref to Physical/Filter
-	MediaFileName *string
+	Name             string
+	Color            ColorCIE
+	Filter           NodeReference[Filter] // ref to Physical/Filter
+	MediaFileName    *string
+	PrismFacets      []*PrismFacet
+	AnimationSystems []*AnimationSystem
+}
+
+func (obj *WheelSlot) ResolveReference() {
+	obj.Filter.Ptr = refPointers.Filters[obj.Filter.String]
 }
 
 type PrismFacet struct {

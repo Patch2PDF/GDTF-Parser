@@ -3,39 +3,40 @@ package XMLTypes
 import Types "github.com/Patch2PDF/GDTF-Parser/types"
 
 type Wheel struct {
-	Name             string `xml:",attr"`
-	WheelSlots       []WheelSlot
-	PrismFacets      []PrismFacet
-	AnimationSystems []AnimationSystem
+	Name       string      `xml:",attr"`
+	WheelSlots []WheelSlot `xml:"Slot"`
 }
 
 func (attr Wheel) Parse() Types.Wheel {
-	wheelSlots := ParseList(&attr.WheelSlots)
-	prismFacets := ParseList(&attr.PrismFacets)
-	animationSystems := ParseList(&attr.AnimationSystems)
 	return Types.Wheel{
-		Name:             attr.Name,
-		WheelSlots:       wheelSlots,
-		PrismFacets:      prismFacets,
-		AnimationSystems: animationSystems,
+		Name:       attr.Name,
+		WheelSlots: ParseList(&attr.WheelSlots),
 	}
 }
 
 type WheelSlot struct {
-	Name          string            `xml:",attr"`
-	Color         *ColorCIE         `xml:",attr,omitempty"`
-	Filter        *XMLNodeReference `xml:",attr,omitempty"` // ref to Physical/Filter
-	MediaFileName *string           `xml:",attr,omitempty"`
+	Name             string            `xml:",attr"`
+	Color            *ColorCIE         `xml:",attr,omitempty"`
+	Filter           *XMLNodeReference `xml:",attr,omitempty"` // ref to Physical/Filter
+	MediaFileName    *string           `xml:",attr,omitempty"`
+	PrismFacets      []PrismFacet      `xml:"Facet"`
+	AnimationSystems []AnimationSystem `xml:"AnimationSystem"`
 }
 
 func (attr WheelSlot) Parse() Types.WheelSlot {
+	filter := ""
+	if attr.Filter != nil {
+		filter = *attr.Filter
+	}
 	return Types.WheelSlot{
 		Name:  attr.Name,
 		Color: Types.ColorCIE(*attr.Color),
 		Filter: Types.NodeReference[Types.Filter]{
-			String: *attr.Filter,
+			String: filter,
 		},
-		MediaFileName: attr.MediaFileName,
+		MediaFileName:    attr.MediaFileName,
+		PrismFacets:      ParseList(&attr.PrismFacets),
+		AnimationSystems: ParseList(&attr.AnimationSystems),
 	}
 }
 
