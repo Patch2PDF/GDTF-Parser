@@ -46,8 +46,14 @@ func ParseGDTF(filename string) (*Types.GDTF, error) {
 		return nil, err
 	}
 
+	// parse XML structs into desired destination structs (kept seperate for breaking changes in GDTF version)
 	parsedGDTF := gdtfContent.Parse()
-	// TODO: parse into desired destination type (with proper pointers as node references, etc.)
+
+	// create pointers for referencing
+	parsedGDTF.CreateReferencePointer()
+
+	// resolve pointer references
+	parsedGDTF.ResolveReference()
 
 	return &parsedGDTF, nil
 }
