@@ -30,7 +30,7 @@ func (dmxMode DMXMode) Parse() Types.DMXMode {
 
 type DMXChannel struct {
 	DMXBreak        int              `xml:",attr"`
-	Offset          []int            `xml:",attr"`
+	Offset          IntList          `xml:",attr"`
 	InitialFunction XMLNodeReference `xml:",attr"`
 	Highlight       XMLDMXValue      `xml:",attr"`
 	Geometry        XMLNodeReference `xml:",attr"`

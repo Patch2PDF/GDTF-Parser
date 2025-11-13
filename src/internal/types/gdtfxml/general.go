@@ -217,19 +217,37 @@ func (b *XMLTime) UnmarshalXMLAttr(attr xml.Attr) error {
 	return nil
 }
 
+type IntList []int
+
+func (h *IntList) UnmarshalXMLAttr(attr xml.Attr) error {
+	if attr.Value == "" {
+		return nil // if empty, dont do anything
+	}
+	values := strings.Split(attr.Value, ",")
+	for _, value := range values {
+		v, err := strconv.ParseInt(value, 0, 0)
+		if err != nil {
+			return err
+		}
+		*h = append(*h, int(v))
+	}
+	return nil
+}
+
 type ConvertToDestinationStruct[T any] interface {
 	Parse() T
 }
 
 type ConvertToDestinationMapStruct[T any] interface {
-	Parse() T
+	ConvertToDestinationStruct[T]
 	ParseKey() string
 }
 
-func ParseList[Source ConvertToDestinationStruct[Destination], Destination any](source *[]Source) []Destination {
-	var destination []Destination = make([]Destination, len(*source))
+func ParseList[Source ConvertToDestinationStruct[Destination], Destination any](source *[]Source) []*Destination {
+	var destination []*Destination = make([]*Destination, len(*source))
 	for index, element := range *source {
-		destination[index] = element.Parse()
+		parsedElement := element.Parse()
+		destination[index] = &parsedElement
 	}
 	return destination
 }
