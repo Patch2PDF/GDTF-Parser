@@ -259,11 +259,13 @@ type GeometryReference struct {
 
 func (geometry GeometryReference) Parse() Types.GeometryReference {
 	return Types.GeometryReference{
-		Name:        geometry.Name,
-		Model:       geometry.Model,
-		Position:    Types.Matrix(geometry.Position),
-		GeometryRef: geometry.GeometryRef, //TODO: add pointer field
-		Breaks:      ParseList(&geometry.Breaks),
+		Name:     geometry.Name,
+		Model:    geometry.Model,
+		Position: Types.Matrix(geometry.Position),
+		GeometryRef: Types.NodeReference[Types.GeometryNodeReference]{
+			String: geometry.GeometryRef,
+		},
+		Breaks: ParseList(&geometry.Breaks),
 	}
 }
 
@@ -431,7 +433,7 @@ func (geometry Structure) Parse() Types.Structure {
 		Name:                      geometry.Name,
 		Model:                     geometry.Model,
 		Position:                  Types.Matrix(geometry.Position),
-		LinkedGeometry:            geometry.LinkedGeometry, // TODO: add pointer?
+		LinkedGeometry:            geometry.LinkedGeometry, // TODO: add pointer? -> find a sample
 		StructureType:             geometry.StructureType,
 		CrossSectionType:          geometry.CrossSectionType,
 		CrossSectionHeight:        geometry.CrossSectionHeight,

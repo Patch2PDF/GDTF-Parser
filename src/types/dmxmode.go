@@ -29,31 +29,30 @@ func (obj *DMXMode) CreateReferencePointer() {
 }
 
 func (obj *DMXMode) ResolveReference() {
-	obj.Geometry.Ptr = &GeometryNodeReference{
-		// Ptr: ,
-		// Type
-		// TODO:
+	obj.Geometry.Ptr = refPointers.Geometries[obj.Geometry.String]
+	for i := range obj.DMXChannels {
+		(obj.DMXChannels)[i].ResolveReference(obj)
 	}
-	ResolveReferences(&obj.DMXChannels)
 	ResolveReferences(&obj.FTMacros)
 }
 
 type DMXChannel struct {
 	DMXBreak        int
 	Offset          []int
-	InitialFunction string //TODO:
+	InitialFunction NodeReference[ChannelFunction] //TODO:
 	Highlight       DMXValue
-	Geometry        NodeReference[GeometryNodeReference]
+	Geometry        string
 	LogicalChannels []*LogicalChannel
 }
 
 func (element DMXChannel) GetName() string {
 	// according to https://www.gdtf.eu/gdtf/file-spec/dmx-mode-collect/#dmx-channel-collect
-	return element.Geometry.String + "_" + element.LogicalChannels[0].Attribute.String
+	return element.Geometry + "_" + element.LogicalChannels[0].Attribute.String
 }
 
-func (obj *DMXChannel) ResolveReference() {
-	//TODO: Geometry Reference
+func (obj *DMXChannel) ResolveReference(mode *DMXMode) {
+	obj.InitialFunction.Ptr = refPointers.ChannelFunctions[mode.Name+"."+obj.InitialFunction.String]
+	// obj.Geometry.Ptr = refPointers.Geometries[obj.Geometry.String] //TODO: dmxchannels only contain the last part of the reference name -> other solution required?
 	ResolveReferences(&obj.LogicalChannels)
 }
 
@@ -86,7 +85,7 @@ type ChannelFunction struct {
 	Filter            NodeReference[Filter]
 	ColorSpace        NodeReference[ColorSpace]
 	Gamut             NodeReference[Gamut]
-	ModeMaster        string //TODO:
+	ModeMaster        string //TODO: reference to dmx channel or other channel function
 	ModeFrom          DMXValue
 	ModeTo            DMXValue
 	DMXProfile        NodeReference[DMXProfile]

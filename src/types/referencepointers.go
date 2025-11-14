@@ -16,7 +16,7 @@ type ReferencePointers struct {
 	SubPhysicalUnits map[string]*SubPhysicalUnit //TODO: find example since spec sheet is not specific enough
 	WiringObjects    map[string]*WiringObject    //TODO: find example since spec sheet is not specific enough
 	ChannelFunctions map[string]*ChannelFunction
-	// TODO: geometry reference
+	Geometries       map[string]*GeometryNodeReference
 }
 
 var refPointers ReferencePointers = ReferencePointers{
@@ -35,6 +35,7 @@ var refPointers ReferencePointers = ReferencePointers{
 	SubPhysicalUnits: make(map[string]*SubPhysicalUnit),
 	WiringObjects:    make(map[string]*WiringObject),
 	ChannelFunctions: make(map[string]*ChannelFunction),
+	Geometries:       make(map[string]*GeometryNodeReference),
 }
 
 type ReferenceCreation interface {
@@ -44,6 +45,16 @@ type ReferenceCreation interface {
 func CreateReferencePointers[T ReferenceCreation](source *[]T) {
 	for _, element := range *source {
 		element.CreateReferencePointer()
+	}
+}
+
+type GeometryReferenceCreation interface {
+	CreateGeometryReferencePointer(parentPrefix string)
+}
+
+func CreateGeometryReferencePointers[T GeometryReferenceCreation](source *[]T, parentPrefix string) {
+	for _, element := range *source {
+		element.CreateGeometryReferencePointer(parentPrefix)
 	}
 }
 

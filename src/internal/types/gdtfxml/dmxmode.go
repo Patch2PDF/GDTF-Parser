@@ -39,13 +39,13 @@ type DMXChannel struct {
 
 func (dmx DMXChannel) Parse() Types.DMXChannel {
 	return Types.DMXChannel{
-		DMXBreak:        dmx.DMXBreak,
-		Offset:          dmx.Offset,
-		InitialFunction: dmx.InitialFunction,
-		Highlight:       dmx.Highlight,
-		Geometry: Types.NodeReference[Types.GeometryNodeReference]{
-			String: dmx.Geometry,
+		DMXBreak: dmx.DMXBreak,
+		Offset:   dmx.Offset,
+		InitialFunction: Types.NodeReference[Types.ChannelFunction]{
+			String: dmx.InitialFunction,
 		},
+		Highlight:       dmx.Highlight,
+		Geometry:        dmx.Geometry,
 		LogicalChannels: ParseList(&dmx.LogicalChannels),
 	}
 }

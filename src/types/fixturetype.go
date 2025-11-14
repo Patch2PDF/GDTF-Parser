@@ -29,7 +29,7 @@ func (obj *FixtureType) CreateReferencePointer() {
 	CreateReferencePointers(&obj.Wheels)
 	CreateReferencePointers(&obj.PhysicalDescriptions)
 	// CreateReferencePointers(&obj.Models)
-	obj.Geometries.CreateReferencePointer()
+	obj.Geometries.CreateGeometryReferencePointer("")
 	CreateReferencePointers(&obj.DMXModes)
 	// CreateReferencePointers(&obj.Revisions)
 	// obj.Protocols.CreateReferencePointer()
