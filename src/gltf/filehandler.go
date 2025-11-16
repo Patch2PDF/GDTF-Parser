@@ -10,7 +10,7 @@ import (
 	"github.com/qmuntal/gltf"
 )
 
-func HandleGltfFile(file io.ReadCloser) ([]*Types.Mesh, error) {
+func LoadGLTF(file io.ReadCloser) ([]*Types.Mesh, error) {
 	var doc gltf.Document
 	gltf.NewDecoder(file).Decode(&doc)
 
