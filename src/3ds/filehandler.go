@@ -24,7 +24,6 @@ package ThreeDS
 import (
 	"bytes"
 	"encoding/binary"
-	"fmt"
 	"io"
 
 	Types "github.com/Patch2PDF/GDTF-Parser/types"
@@ -234,8 +233,6 @@ func calculateBoundingBox(triangles *[]*Types.Triangle) Types.MeshVector {
 func ScaleToDimensions(triangles *[]*Types.Triangle, desiredSize *Types.MeshVector) {
 	actual := calculateBoundingBox(triangles)
 	scaling := desiredSize.Div(actual)
-	fmt.Println("Scaling:")
-	fmt.Println(scaling)
 	scaledVectors := make(map[*Types.Vertex]bool)
 	for _, triangle := range *triangles {
 		if !scaledVectors[triangle.V0] {
