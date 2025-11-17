@@ -24,12 +24,13 @@ package ThreeDS
 import (
 	"bytes"
 	"encoding/binary"
+	"fmt"
 	"io"
 
 	Types "github.com/Patch2PDF/GDTF-Parser/types"
 )
 
-func Load3DS(fileData *[]byte) (*Types.Mesh, error) {
+func Load3DS(fileData *[]byte, desiredSize *Types.MeshVector) (*Types.Mesh, error) {
 	type ChunkHeader struct {
 		ChunkID uint16
 		Length  uint32
@@ -86,6 +87,10 @@ func Load3DS(fileData *[]byte) (*Types.Mesh, error) {
 		default:
 			file.Seek(int64(header.Length-6), 1)
 		}
+	}
+
+	if desiredSize != nil {
+		ScaleToDimensions(&triangles, desiredSize)
 	}
 
 	return &Types.Mesh{Triangles: triangles}, nil
@@ -204,4 +209,46 @@ func readNullTerminatedString(file *bytes.Reader) (string, error) {
 		}
 	}
 	return string(bytes), nil
+}
+
+func calculateBoundingBox(triangles *[]*Types.Triangle) Types.MeshVector {
+	min := Types.MeshVector{}
+	max := Types.MeshVector{}
+	for _, triangle := range *triangles {
+		min = triangle.V0.Position.Min(&min)
+		max = triangle.V0.Position.Max(&max)
+
+		min = triangle.V1.Position.Min(&min)
+		max = triangle.V1.Position.Max(&max)
+
+		min = triangle.V2.Position.Min(&min)
+		max = triangle.V2.Position.Max(&max)
+	}
+	return Types.MeshVector{
+		X: max.X - min.X,
+		Y: max.Y - min.Y,
+		Z: max.Z - min.Z,
+	}
+}
+
+func ScaleToDimensions(triangles *[]*Types.Triangle, desiredSize *Types.MeshVector) {
+	actual := calculateBoundingBox(triangles)
+	scaling := desiredSize.Div(actual)
+	fmt.Println("Scaling:")
+	fmt.Println(scaling)
+	scaledVectors := make(map[*Types.Vertex]bool)
+	for _, triangle := range *triangles {
+		if !scaledVectors[triangle.V0] {
+			triangle.V0.Position = triangle.V0.Position.Mult(scaling)
+			scaledVectors[triangle.V0] = true
+		}
+		if !scaledVectors[triangle.V1] {
+			triangle.V1.Position = triangle.V1.Position.Mult(scaling)
+			scaledVectors[triangle.V1] = true
+		}
+		if !scaledVectors[triangle.V2] {
+			triangle.V2.Position = triangle.V2.Position.Mult(scaling)
+			scaledVectors[triangle.V2] = true
+		}
+	}
 }
