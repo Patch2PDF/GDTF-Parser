@@ -10,7 +10,7 @@ import (
 	"github.com/qmuntal/gltf"
 )
 
-func LoadGLTF(file io.ReadCloser) ([]*Types.Mesh, error) {
+func LoadGLTF(file io.ReadCloser, desiredSize Types.MeshVector) ([]*Types.Mesh, error) {
 	var doc gltf.Document
 	gltf.NewDecoder(file).Decode(&doc)
 
@@ -18,8 +18,14 @@ func LoadGLTF(file io.ReadCloser) ([]*Types.Mesh, error) {
 
 	for _, m := range doc.Meshes {
 		for _, p := range m.Primitives {
+			// contains Min and Max attr (for dimension calc)
 			posAccessor := doc.Accessors[p.Attributes[gltf.POSITION]]
-			positions, err := gltfVec3(&doc, posAccessor)
+			scaling := Types.MeshVector{
+				X: desiredSize.X / (posAccessor.Max[0] - posAccessor.Min[0]),
+				Y: desiredSize.Y / (posAccessor.Max[1] - posAccessor.Min[1]),
+				Z: desiredSize.Z / (posAccessor.Max[2] - posAccessor.Min[2]),
+			}
+			positions, err := gltfVec3(&doc, posAccessor, scaling)
 			if err != nil {
 				return nil, err
 			}
@@ -27,7 +33,7 @@ func LoadGLTF(file io.ReadCloser) ([]*Types.Mesh, error) {
 			var normals []Types.MeshVector
 			if nIdx, ok := p.Attributes[gltf.NORMAL]; ok {
 				normalAccessor := doc.Accessors[nIdx]
-				normals, err = gltfVec3(&doc, normalAccessor)
+				normals, err = gltfVec3(&doc, normalAccessor, Types.MeshVector{X: 1, Y: 1, Z: 1})
 				if err != nil {
 					return nil, err
 				}
@@ -65,7 +71,7 @@ func LoadGLTF(file io.ReadCloser) ([]*Types.Mesh, error) {
 	return meshes, nil
 }
 
-func gltfVec3(doc *gltf.Document, acc *gltf.Accessor) ([]Types.MeshVector, error) {
+func gltfVec3(doc *gltf.Document, acc *gltf.Accessor, scaling Types.MeshVector) ([]Types.MeshVector, error) {
 	bufView := doc.BufferViews[*acc.BufferView]
 	buffer := doc.Buffers[bufView.Buffer]
 
@@ -79,7 +85,7 @@ func gltfVec3(doc *gltf.Document, acc *gltf.Accessor) ([]Types.MeshVector, error
 		x := math.Float32frombits(binary.LittleEndian.Uint32(raw[base+0:]))
 		y := math.Float32frombits(binary.LittleEndian.Uint32(raw[base+4:]))
 		z := math.Float32frombits(binary.LittleEndian.Uint32(raw[base+8:]))
-		vectors[i] = Types.MeshVector{X: float64(x), Y: float64(y), Z: float64(z)}
+		vectors[i] = Types.MeshVector{X: float64(x) * scaling.X, Y: float64(y) * scaling.Y, Z: float64(z) * scaling.Z}
 	}
 
 	return vectors, nil
