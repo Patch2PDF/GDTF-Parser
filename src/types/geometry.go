@@ -10,6 +10,27 @@ type GeometryNodeReference struct {
 	Type string
 }
 
+type GeometryBase struct {
+	Name     string
+	Model    NodeReference[Model]
+	Position Matrix
+	Geometries
+}
+
+func (obj *GeometryBase) CreateGeometryReferencePointer(parentPrefix string) {
+	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
+	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
+		Ptr:  obj,
+		Type: reflect.TypeOf(obj).String(),
+	}
+	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+}
+
+func (obj *GeometryBase) ResolveReference() {
+	obj.Model.Ptr = refPointers.Models[obj.Model.String]
+	obj.Geometries.ResolveReference()
+}
+
 type Geometries struct {
 	GeometryList          []*Geometry
 	AxisList              []*Axis
@@ -76,105 +97,31 @@ func (obj *Geometries) ResolveReference() {
 }
 
 type Geometry struct {
-	Name     string
-	Model    string
-	Position Matrix
-	Geometries
-}
-
-func (obj *Geometry) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+	GeometryBase
 }
 
 type Axis struct {
-	Name     string
-	Model    string
-	Position Matrix
-	Geometries
-}
-
-func (obj *Axis) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+	GeometryBase
 }
 
 type FilterBeam struct {
-	Name     string
-	Model    string
-	Position Matrix
-	Geometries
-}
-
-func (obj *FilterBeam) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+	GeometryBase
 }
 
 type FilterColor struct {
-	Name     string
-	Model    string
-	Position Matrix
-	Geometries
-}
-
-func (obj *FilterColor) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+	GeometryBase
 }
 
 type FilterGobo struct {
-	Name     string
-	Model    string
-	Position Matrix
-	Geometries
-}
-
-func (obj *FilterGobo) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+	GeometryBase
 }
 
 type FilterShaper struct {
-	Name     string
-	Model    string
-	Position Matrix
-	Geometries
-}
-
-func (obj *FilterShaper) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+	GeometryBase
 }
 
 type Beam struct {
-	Name             string
-	Model            string
-	Position         Matrix
+	GeometryBase
 	LampType         string
 	PowerConsumption float32
 	LuminousFlux     float32
@@ -187,90 +134,33 @@ type Beam struct {
 	BeamType         string
 	CRI              uint
 	EmitterSpectrum  NodeReference[Emitter]
-	Geometries
-}
-
-func (obj *Beam) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
 }
 
 func (obj *Beam) ResolveReference() {
 	obj.EmitterSpectrum.Ptr = refPointers.Emitters[obj.EmitterSpectrum.String]
+	obj.GeometryBase.ResolveReference()
 }
 
 type MediaServerLayer struct {
-	Name     string
-	Model    string
-	Position Matrix
-	Geometries
-}
-
-func (obj *MediaServerLayer) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+	GeometryBase
 }
 
 type MediaServerCamera struct {
-	Name     string
-	Model    string
-	Position Matrix
-	Geometries
-}
-
-func (obj *MediaServerCamera) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+	GeometryBase
 }
 
 type MediaServerMaster struct {
-	Name     string
-	Model    string
-	Position Matrix
-	Geometries
-}
-
-func (obj *MediaServerMaster) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+	GeometryBase
 }
 
 type Display struct {
-	Name     string
-	Model    string
-	Position Matrix
-	Texture  FileReference
-	Geometries
-}
-
-func (obj *Display) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+	GeometryBase
+	Texture FileReference
 }
 
 type GeometryReference struct {
 	Name        string
-	Model       string
+	Model       NodeReference[Model]
 	Position    Matrix
 	GeometryRef NodeReference[GeometryNodeReference] // only top level geometries allowed to be referenced
 	Breaks      []*Break
@@ -279,6 +169,7 @@ type GeometryReference struct {
 
 func (obj *GeometryReference) ResolveReference() {
 	obj.GeometryRef.Ptr = refPointers.Geometries[obj.GeometryRef.String]
+	obj.Model.Ptr = refPointers.Models[obj.Model.String]
 }
 
 type Break struct {
@@ -287,9 +178,7 @@ type Break struct {
 }
 
 type Laser struct {
-	Name              string
-	Model             string
-	Position          Matrix
+	GeometryBase
 	ColorType         string  // enum
 	Color             float32 // Required if ColorType is “SingleWaveLength”; Unit:nm (nanometers)
 	OutputStrength    float32
@@ -301,20 +190,11 @@ type Laser struct {
 	ScanAngleTilt     float32
 	ScanSpeed         float32
 	Protocols         []*LaserProtocol
-	Geometries
-}
-
-func (obj *Laser) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
 }
 
 func (obj *Laser) ResolveReference() {
 	obj.Emitter.Ptr = refPointers.Emitters[obj.Emitter.String]
+	obj.GeometryBase.ResolveReference()
 }
 
 type LaserProtocol struct {
@@ -322,10 +202,8 @@ type LaserProtocol struct {
 }
 
 type WiringObject struct {
-	Name              string
-	Model             string
+	GeometryBase
 	ConnectorType     string
-	Position          Matrix
 	ComponentType     string //enum
 	SignalType        string
 	PinCount          int
@@ -343,20 +221,11 @@ type WiringObject struct {
 	Orientation       string  //enum
 	WireGroup         string
 	PinPatches        []*PinPatch
-	Geometries
-}
-
-func (obj *WiringObject) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
 }
 
 func (obj *WiringObject) ResolveReference() {
 	ResolveReferences(&obj.PinPatches)
+	obj.GeometryBase.ResolveReference()
 }
 
 type PinPatch struct {
@@ -370,48 +239,22 @@ func (obj *PinPatch) ResolveReference() {
 }
 
 type Inventory struct {
-	Name     string
-	Model    string
-	Position Matrix
-	Count    int
-	Geometries
-}
-
-func (obj *Inventory) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+	GeometryBase
+	Count int
 }
 
 type Structure struct {
-	Name                      string
-	Model                     string
-	Position                  Matrix
+	GeometryBase
 	LinkedGeometry            string // for now (analyse if this can be a NodeReference instead)
 	StructureType             string // enum
 	CrossSectionType          string // enum
 	CrossSectionHeight        float32
 	CrossSectionWallThickness float32
 	TrussCrossSection         string
-	Geometries
-}
-
-func (obj *Structure) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
 }
 
 type Support struct {
-	Name             string
-	Model            string
-	Position         Matrix
+	GeometryBase
 	SupportType      string //enum
 	RopeCrossSection string
 	RopeOffset       Vector3
@@ -427,30 +270,8 @@ type Support struct {
 	ResistanceXX     float32
 	ResistanceYY     float32
 	ResistanceZZ     float32
-	Geometries
-}
-
-func (obj *Support) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
 }
 
 type Magnet struct {
-	Name     string
-	Model    string
-	Position Matrix
-	Geometries
-}
-
-func (obj *Magnet) CreateGeometryReferencePointer(parentPrefix string) {
-	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
-	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
-		Ptr:  obj,
-		Type: reflect.TypeOf(obj).String(),
-	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+	GeometryBase
 }

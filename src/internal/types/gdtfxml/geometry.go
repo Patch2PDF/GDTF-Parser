@@ -55,10 +55,14 @@ type Geometry struct {
 
 func (geometry Geometry) Parse() Types.Geometry {
 	return Types.Geometry{
-		Name:       geometry.Name,
-		Model:      geometry.Model,
-		Position:   Types.Matrix(geometry.Position),
-		Geometries: geometry.Geometries.Parse(),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 	}
 }
 
@@ -71,10 +75,14 @@ type Axis struct {
 
 func (geometry Axis) Parse() Types.Axis {
 	return Types.Axis{
-		Name:       geometry.Name,
-		Model:      geometry.Model,
-		Position:   Types.Matrix(geometry.Position),
-		Geometries: geometry.Geometries.Parse(),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 	}
 }
 
@@ -87,10 +95,14 @@ type FilterBeam struct {
 
 func (geometry FilterBeam) Parse() Types.FilterBeam {
 	return Types.FilterBeam{
-		Name:       geometry.Name,
-		Model:      geometry.Model,
-		Position:   Types.Matrix(geometry.Position),
-		Geometries: geometry.Geometries.Parse(),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 	}
 }
 
@@ -103,10 +115,14 @@ type FilterColor struct {
 
 func (geometry FilterColor) Parse() Types.FilterColor {
 	return Types.FilterColor{
-		Name:       geometry.Name,
-		Model:      geometry.Model,
-		Position:   Types.Matrix(geometry.Position),
-		Geometries: geometry.Geometries.Parse(),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 	}
 }
 
@@ -119,10 +135,14 @@ type FilterGobo struct {
 
 func (geometry FilterGobo) Parse() Types.FilterGobo {
 	return Types.FilterGobo{
-		Name:       geometry.Name,
-		Model:      geometry.Model,
-		Position:   Types.Matrix(geometry.Position),
-		Geometries: geometry.Geometries.Parse(),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 	}
 }
 
@@ -135,10 +155,14 @@ type FilterShaper struct {
 
 func (geometry FilterShaper) Parse() Types.FilterShaper {
 	return Types.FilterShaper{
-		Name:       geometry.Name,
-		Model:      geometry.Model,
-		Position:   Types.Matrix(geometry.Position),
-		Geometries: geometry.Geometries.Parse(),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 	}
 }
 
@@ -163,9 +187,14 @@ type Beam struct {
 
 func (geometry Beam) Parse() Types.Beam {
 	return Types.Beam{
-		Name:             geometry.Name,
-		Model:            geometry.Model,
-		Position:         Types.Matrix(geometry.Position),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 		LampType:         geometry.LampType,
 		PowerConsumption: geometry.PowerConsumption,
 		LuminousFlux:     geometry.LuminousFlux,
@@ -180,7 +209,6 @@ func (geometry Beam) Parse() Types.Beam {
 		EmitterSpectrum: Types.NodeReference[Types.Emitter]{
 			String: geometry.EmitterSpectrum,
 		},
-		Geometries: geometry.Geometries.Parse(),
 	}
 }
 
@@ -193,10 +221,14 @@ type MediaServerLayer struct {
 
 func (geometry MediaServerLayer) Parse() Types.MediaServerLayer {
 	return Types.MediaServerLayer{
-		Name:       geometry.Name,
-		Model:      geometry.Model,
-		Position:   Types.Matrix(geometry.Position),
-		Geometries: geometry.Geometries.Parse(),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 	}
 }
 
@@ -209,10 +241,14 @@ type MediaServerCamera struct {
 
 func (geometry MediaServerCamera) Parse() Types.MediaServerCamera {
 	return Types.MediaServerCamera{
-		Name:       geometry.Name,
-		Model:      geometry.Model,
-		Position:   Types.Matrix(geometry.Position),
-		Geometries: geometry.Geometries.Parse(),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 	}
 }
 
@@ -225,10 +261,14 @@ type MediaServerMaster struct {
 
 func (geometry MediaServerMaster) Parse() Types.MediaServerMaster {
 	return Types.MediaServerMaster{
-		Name:       geometry.Name,
-		Model:      geometry.Model,
-		Position:   Types.Matrix(geometry.Position),
-		Geometries: geometry.Geometries.Parse(),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 	}
 }
 
@@ -242,10 +282,14 @@ type Display struct {
 
 func (geometry Display) Parse() Types.Display {
 	return Types.Display{
-		Name:       geometry.Name,
-		Model:      geometry.Model,
-		Position:   Types.Matrix(geometry.Position),
-		Geometries: geometry.Geometries.Parse(),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 	}
 }
 
@@ -259,8 +303,10 @@ type GeometryReference struct {
 
 func (geometry GeometryReference) Parse() Types.GeometryReference {
 	return Types.GeometryReference{
-		Name:     geometry.Name,
-		Model:    geometry.Model,
+		Name: geometry.Name,
+		Model: Types.NodeReference[Types.Model]{
+			String: geometry.Model,
+		},
 		Position: Types.Matrix(geometry.Position),
 		GeometryRef: Types.NodeReference[Types.GeometryNodeReference]{
 			String: geometry.GeometryRef,
@@ -301,9 +347,14 @@ type Laser struct {
 
 func (geometry Laser) Parse() Types.Laser {
 	return Types.Laser{
-		Name:           geometry.Name,
-		Model:          geometry.Model,
-		Position:       Types.Matrix(geometry.Position),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 		ColorType:      geometry.ColorType,
 		Color:          geometry.Color,
 		OutputStrength: geometry.OutputStrength,
@@ -317,7 +368,6 @@ func (geometry Laser) Parse() Types.Laser {
 		ScanAngleTilt:     geometry.ScanAngleTilt,
 		ScanSpeed:         geometry.ScanSpeed,
 		Protocols:         ParseList(&geometry.Protocols),
-		Geometries:        geometry.Geometries.Parse(),
 	}
 }
 
@@ -356,10 +406,15 @@ type WiringObject struct {
 
 func (geometry WiringObject) Parse() Types.WiringObject {
 	return Types.WiringObject{
-		Name:              geometry.Name,
-		Model:             geometry.Model,
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 		ConnectorType:     geometry.ConnectorType,
-		Position:          Types.Matrix(geometry.Position),
 		ComponentType:     geometry.ComponentType,
 		SignalType:        geometry.SignalType,
 		PinCount:          geometry.PinCount,
@@ -377,7 +432,6 @@ func (geometry WiringObject) Parse() Types.WiringObject {
 		Orientation:       geometry.Orientation,
 		WireGroup:         geometry.WireGroup,
 		PinPatches:        ParseList(&geometry.PinPatches),
-		Geometries:        geometry.Geometries.Parse(),
 	}
 }
 
@@ -407,11 +461,15 @@ type Inventory struct {
 
 func (geometry Inventory) Parse() Types.Inventory {
 	return Types.Inventory{
-		Name:       geometry.Name,
-		Model:      geometry.Model,
-		Position:   Types.Matrix(geometry.Position),
-		Count:      geometry.Count,
-		Geometries: geometry.Geometries.Parse(),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
+		Count: geometry.Count,
 	}
 }
 
@@ -430,16 +488,20 @@ type Structure struct {
 
 func (geometry Structure) Parse() Types.Structure {
 	return Types.Structure{
-		Name:                      geometry.Name,
-		Model:                     geometry.Model,
-		Position:                  Types.Matrix(geometry.Position),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 		LinkedGeometry:            geometry.LinkedGeometry, // TODO: add pointer? -> find a sample
 		StructureType:             geometry.StructureType,
 		CrossSectionType:          geometry.CrossSectionType,
 		CrossSectionHeight:        geometry.CrossSectionHeight,
 		CrossSectionWallThickness: geometry.CrossSectionWallThickness,
 		TrussCrossSection:         geometry.TrussCrossSection,
-		Geometries:                geometry.Geometries.Parse(),
 	}
 }
 
@@ -467,9 +529,14 @@ type Support struct {
 
 func (geometry Support) Parse() Types.Support {
 	return Types.Support{
-		Name:             geometry.Name,
-		Model:            geometry.Model,
-		Position:         Types.Matrix(geometry.Position),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 		SupportType:      geometry.SupportType,
 		RopeCrossSection: geometry.RopeCrossSection,
 		RopeOffset:       Types.Vector3(geometry.RopeOffset),
@@ -485,7 +552,6 @@ func (geometry Support) Parse() Types.Support {
 		ResistanceXX:     geometry.ResistanceXX,
 		ResistanceYY:     geometry.ResistanceYY,
 		ResistanceZZ:     geometry.ResistanceZZ,
-		Geometries:       geometry.Geometries.Parse(),
 	}
 }
 
@@ -498,9 +564,13 @@ type Magnet struct {
 
 func (geometry Magnet) Parse() Types.Magnet {
 	return Types.Magnet{
-		Name:       geometry.Name,
-		Model:      geometry.Model,
-		Position:   Types.Matrix(geometry.Position),
-		Geometries: geometry.Geometries.Parse(),
+		GeometryBase: Types.GeometryBase{
+			Name: geometry.Name,
+			Model: Types.NodeReference[Types.Model]{
+				String: geometry.Model,
+			},
+			Position:   Types.Matrix(geometry.Position),
+			Geometries: geometry.Geometries.Parse(),
+		},
 	}
 }

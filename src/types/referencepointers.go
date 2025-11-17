@@ -17,6 +17,7 @@ type ReferencePointers struct {
 	WiringObjects    map[string]*WiringObject    //TODO: find example since spec sheet is not specific enough
 	ChannelFunctions map[string]*ChannelFunction
 	Geometries       map[string]*GeometryNodeReference
+	Models           map[string]*Model
 }
 
 var refPointers ReferencePointers = ReferencePointers{
@@ -36,6 +37,7 @@ var refPointers ReferencePointers = ReferencePointers{
 	WiringObjects:    make(map[string]*WiringObject),
 	ChannelFunctions: make(map[string]*ChannelFunction),
 	Geometries:       make(map[string]*GeometryNodeReference),
+	Models:           make(map[string]*Model),
 }
 
 type ReferenceCreation interface {

@@ -18,5 +18,19 @@ type Model struct {
 }
 
 func (model Model) Parse() Types.Model {
-	return Types.Model(model) // for now, potentially need to adjust when parsing 3d model data
+	return Types.Model{
+		Name:            model.Name,
+		Length:          model.Length,
+		Width:           model.Width,
+		Height:          model.Height,
+		PrimitiveType:   model.PrimitiveType,
+		File:            model.File,
+		SVGOffsetX:      model.SVGOffsetX,
+		SVGOffsetY:      model.SVGOffsetY,
+		SVGSideOffsetX:  model.SVGSideOffsetX,
+		SVGSideOffsetY:  model.SVGSideOffsetY,
+		SVGFrontOffsetX: model.SVGFrontOffsetX,
+		SVGFrontOffsetY: model.SVGFrontOffsetY,
+		Mesh:            nil,
+	}
 }

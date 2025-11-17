@@ -13,4 +13,9 @@ type Model struct {
 	SVGSideOffsetY  float32
 	SVGFrontOffsetX float32
 	SVGFrontOffsetY float32
+	Mesh            *Mesh
+}
+
+func (obj *Model) CreateReferencePointer() {
+	refPointers.Models[obj.Name] = obj
 }
