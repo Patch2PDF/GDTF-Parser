@@ -79,6 +79,14 @@ type Vertex struct {
 	Normal   *MeshVector
 }
 
+func (obj *Vertex) Copy() Vertex {
+	normalCopy := *obj.Normal
+	return Vertex{
+		Position: obj.Position,
+		Normal:   &normalCopy,
+	}
+}
+
 type Triangle struct {
 	V0 *Vertex
 	V1 *Vertex
@@ -91,10 +99,26 @@ func (t *Triangle) Normal() MeshVector {
 	return e1.Cross(e2).Normalize()
 }
 
+func (obj *Triangle) Copy() Triangle {
+	V0 := obj.V0.Copy()
+	V1 := obj.V1.Copy()
+	V2 := obj.V2.Copy()
+	return Triangle{V0: &V0, V1: &V1, V2: &V2}
+}
+
 type Mesh struct {
 	Triangles []*Triangle
 }
 
 func (obj *Mesh) AddTriangle(triangle *Triangle) {
 	obj.Triangles = append(obj.Triangles, triangle)
+}
+
+func (obj *Mesh) Copy() Mesh {
+	triangles := make([]*Triangle, len(obj.Triangles))
+	for index, triangle := range obj.Triangles {
+		temp := triangle.Copy()
+		triangles[index] = &temp
+	}
+	return Mesh{Triangles: triangles}
 }
