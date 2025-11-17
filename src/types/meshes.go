@@ -35,6 +35,38 @@ func (obj MeshVector) ToVertex(normal *MeshVector) *Vertex {
 	}
 }
 
+func (a MeshVector) Min(b *MeshVector) MeshVector {
+	return MeshVector{
+		math.Min(a.X, b.X),
+		math.Min(a.Y, b.Y),
+		math.Min(a.Z, b.Z),
+	}
+}
+
+func (a MeshVector) Max(b *MeshVector) MeshVector {
+	return MeshVector{
+		math.Max(a.X, b.X),
+		math.Max(a.Y, b.Y),
+		math.Max(a.Z, b.Z),
+	}
+}
+
+func (a MeshVector) Mult(b MeshVector) MeshVector {
+	return MeshVector{
+		a.X * b.X,
+		a.Y * b.Y,
+		a.Z * b.Z,
+	}
+}
+
+func (a MeshVector) Div(b MeshVector) MeshVector {
+	return MeshVector{
+		a.X / b.X,
+		a.Y / b.Y,
+		a.Z / b.Z,
+	}
+}
+
 type MeshMatrix struct {
 	X00, X01, X02, X03 float64
 	X10, X11, X12, X13 float64
