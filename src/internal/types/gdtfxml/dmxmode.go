@@ -28,6 +28,10 @@ func (dmxMode DMXMode) Parse() Types.DMXMode {
 	}
 }
 
+func (dmxMode DMXMode) ParseKey() string {
+	return dmxMode.Name
+}
+
 type DMXChannel struct {
 	DMXBreak        int              `xml:",attr"`
 	Offset          IntList          `xml:",attr"`

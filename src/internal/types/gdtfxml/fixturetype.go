@@ -44,7 +44,7 @@ func (fixtureType FixtureType) Parse() Types.FixtureType {
 		PhysicalDescriptions: ParseList(&fixtureType.PhysicalDescriptions),
 		Models:               ParseList(&fixtureType.Models),
 		Geometries:           fixtureType.Geometries.Parse(),
-		DMXModes:             ParseList(&fixtureType.DMXModes),
+		DMXModes:             ParseMap(&fixtureType.DMXModes),
 		Revisions:            ParseList(&fixtureType.Revisions),
 		FTPresets:            nil, // not defined yet in spec
 		Protocols:            fixtureType.Protocols.Parse(),

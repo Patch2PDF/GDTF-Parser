@@ -18,7 +18,7 @@ type FixtureType struct {
 	PhysicalDescriptions []*PhysicalDescription
 	Models               []*Model
 	Geometries           Geometries
-	DMXModes             []*DMXMode
+	DMXModes             map[string]*DMXMode
 	Revisions            []*Revision
 	FTPresets            *[]string
 	Protocols            Protocol
@@ -30,7 +30,7 @@ func (obj *FixtureType) CreateReferencePointer() {
 	CreateReferencePointers(&obj.PhysicalDescriptions)
 	CreateReferencePointers(&obj.Models)
 	obj.Geometries.CreateGeometryReferencePointer("")
-	CreateReferencePointers(&obj.DMXModes)
+	CreateReferencePointersMap(&obj.DMXModes)
 	// CreateReferencePointers(&obj.Revisions)
 	// obj.Protocols.CreateReferencePointer()
 }
@@ -39,5 +39,5 @@ func (obj *FixtureType) ResolveReference() {
 	obj.AttributeDefinitions.ResolveReference()
 	ResolveReferences(&obj.Wheels)
 	obj.Geometries.ResolveReference()
-	ResolveReferences(&obj.DMXModes)
+	ResolveReferencesMap(&obj.DMXModes)
 }

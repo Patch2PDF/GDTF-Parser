@@ -252,10 +252,11 @@ func ParseList[Source ConvertToDestinationStruct[Destination], Destination any](
 	return destination
 }
 
-func ParseMap[Source ConvertToDestinationMapStruct[Destination], Destination any](source *[]Source) map[string]Destination {
-	destination := make(map[string]Destination)
+func ParseMap[Source ConvertToDestinationMapStruct[Destination], Destination any](source *[]Source) map[string]*Destination {
+	destination := make(map[string]*Destination)
 	for _, element := range *source {
-		destination[element.ParseKey()] = element.Parse()
+		parsedElement := element.Parse()
+		destination[element.ParseKey()] = &parsedElement
 	}
 	return destination
 }
