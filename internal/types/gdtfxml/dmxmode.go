@@ -3,7 +3,7 @@ package XMLTypes
 import (
 	"strconv"
 
-	Types "github.com/Patch2PDF/GDTF-Parser/types"
+	Types "github.com/Patch2PDF/GDTF-Parser/pkg/types"
 )
 
 type DMXMode struct {

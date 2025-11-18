@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	Types "github.com/Patch2PDF/GDTF-Parser/types"
+	Types "github.com/Patch2PDF/GDTF-Parser/pkg/types"
 )
 
 // TODO: DMXValue Type

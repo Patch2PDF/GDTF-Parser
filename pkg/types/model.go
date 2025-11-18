@@ -1,5 +1,7 @@
 package Types
 
+import "github.com/Patch2PDF/GDTF-Mesh-Reader/pkg/MeshTypes"
+
 type Model struct {
 	Name            string
 	Length          float32
@@ -13,7 +15,7 @@ type Model struct {
 	SVGSideOffsetY  float32
 	SVGFrontOffsetX float32
 	SVGFrontOffsetY float32
-	Mesh            *Mesh
+	Mesh            *MeshTypes.Mesh
 }
 
 func (obj *Model) CreateReferencePointer() {

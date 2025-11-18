@@ -3,6 +3,8 @@ package Types
 import (
 	"reflect"
 	"strings"
+
+	"github.com/Patch2PDF/GDTF-Mesh-Reader/pkg/MeshTypes"
 )
 
 type GeometryNodeReference struct {
@@ -32,11 +34,11 @@ func (obj *GeometryBase) ResolveReference() {
 }
 
 type MeshGenerator interface {
-	GenerateMesh(parentTransformation MeshMatrix) *Mesh
+	GenerateMesh(parentTransformation MeshTypes.Matrix) *MeshTypes.Mesh
 }
 
-func (obj *GeometryBase) GenerateMesh(parentTransformation MeshMatrix) *Mesh {
-	var mesh1 Mesh
+func (obj *GeometryBase) GenerateMesh(parentTransformation MeshTypes.Matrix) *MeshTypes.Mesh {
+	var mesh1 MeshTypes.Mesh
 	localTransformation := obj.Position.toMeshMatrix()
 	transformation := parentTransformation.Mul(localTransformation)
 	if obj.Model.Ptr != nil && obj.Model.Ptr.Mesh != nil {
@@ -47,8 +49,8 @@ func (obj *GeometryBase) GenerateMesh(parentTransformation MeshMatrix) *Mesh {
 	return mesh1.Add(mesh2)
 }
 
-func GenerateMeshes[T MeshGenerator](source *[]T, parentTransformation MeshMatrix) *Mesh {
-	mesh := &Mesh{}
+func GenerateMeshes[T MeshGenerator](source *[]T, parentTransformation MeshTypes.Matrix) *MeshTypes.Mesh {
+	mesh := &MeshTypes.Mesh{}
 	if source == nil {
 		return mesh
 	}
@@ -123,7 +125,7 @@ func (obj *Geometries) ResolveReference() {
 	ResolveReferences(&obj.MagnetList)
 }
 
-func (obj *Geometries) GenerateMesh(parentTransformation MeshMatrix) *Mesh {
+func (obj *Geometries) GenerateMesh(parentTransformation MeshTypes.Matrix) *MeshTypes.Mesh {
 	mesh := GenerateMeshes(&obj.GeometryList, parentTransformation)
 	mesh.Add(GenerateMeshes(&obj.AxisList, parentTransformation))
 	mesh.Add(GenerateMeshes(&obj.FilterBeamList, parentTransformation))
@@ -221,8 +223,8 @@ func (obj *GeometryReference) ResolveReference() {
 	obj.Model.Ptr = refPointers.Models[obj.Model.String]
 }
 
-func (obj *GeometryReference) GenerateMesh(parentTransformation MeshMatrix) *Mesh {
-	var mesh *Mesh
+func (obj *GeometryReference) GenerateMesh(parentTransformation MeshTypes.Matrix) *MeshTypes.Mesh {
+	var mesh *MeshTypes.Mesh
 	localTransformation := obj.Position.toMeshMatrix()
 	transformation := parentTransformation.Mul(localTransformation)
 	// if own model, replace parent mesh

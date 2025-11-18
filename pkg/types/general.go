@@ -1,5 +1,7 @@
 package Types
 
+import "github.com/Patch2PDF/GDTF-Mesh-Reader/pkg/MeshTypes"
+
 // TODO: DMXValue Type
 // see gdtf https://www.gdtf.eu/gdtf/file-spec/file-format-definition/#attrtype-dmxvalue
 type DMXValue = string
@@ -34,12 +36,12 @@ type ColorCIE struct {
 //	Z – from bottom (-Z) to top (+Z). 0,0,0 – center base.
 type Matrix [4][4]float64
 
-func (obj Matrix) toMeshMatrix() MeshMatrix {
-	return MeshMatrix{
-		obj[0][0], obj[0][1], obj[0][2], obj[0][3],
-		obj[1][0], obj[1][1], obj[1][2], obj[1][3],
-		obj[2][0], obj[2][1], obj[2][2], obj[2][3],
-		obj[3][0], obj[3][1], obj[3][2], obj[3][3],
+func (obj Matrix) toMeshMatrix() MeshTypes.Matrix {
+	return MeshTypes.Matrix{
+		X00: obj[0][0], X01: obj[0][1], X02: obj[0][2], X03: obj[0][3],
+		X10: obj[1][0], X11: obj[1][1], X12: obj[1][2], X13: obj[1][3],
+		X20: obj[2][0], X21: obj[2][1], X22: obj[2][2], X23: obj[2][3],
+		X30: obj[3][0], X31: obj[3][1], X32: obj[3][2], X33: obj[3][3],
 	}
 }
 

@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 
 	XMLTypes "github.com/Patch2PDF/GDTF-Parser/internal/types/gdtfxml"
-	Types "github.com/Patch2PDF/GDTF-Parser/types"
+	Types "github.com/Patch2PDF/GDTF-Parser/pkg/types"
 )
 
 func ParseGDTF(filename string) (*Types.GDTF, error) {

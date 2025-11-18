@@ -1,6 +1,6 @@
 package XMLTypes
 
-import Types "github.com/Patch2PDF/GDTF-Parser/types"
+import Types "github.com/Patch2PDF/GDTF-Parser/pkg/types"
 
 type PhysicalDescription struct {
 	Emitters              []Emitter    `xml:"Emitters>Emitter"`

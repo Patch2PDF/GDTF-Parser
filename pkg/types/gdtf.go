@@ -1,6 +1,10 @@
 package Types
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/Patch2PDF/GDTF-Mesh-Reader/pkg/MeshTypes"
+)
 
 type GDTF struct {
 	DataVersion string
@@ -16,10 +20,10 @@ func (obj *GDTF) ResolveReference() {
 }
 
 // Assemble a mesh based on entire geometry
-func (obj *GDTF) BuildMesh(dmxMode string) (*Mesh, error) {
+func (obj *GDTF) BuildMesh(dmxMode string) (*MeshTypes.Mesh, error) {
 	mode := obj.FixtureType.DMXModes[dmxMode]
 	if mode == nil {
 		return nil, fmt.Errorf("unknown DMX Mode '%s' in Fixture %s", dmxMode, obj.FixtureType.Name)
 	}
-	return obj.FixtureType.DMXModes[dmxMode].Geometry.Ptr.Ptr.(MeshGenerator).GenerateMesh(Identity()), nil
+	return obj.FixtureType.DMXModes[dmxMode].Geometry.Ptr.Ptr.(MeshGenerator).GenerateMesh(MeshTypes.IdentityMatrix()), nil
 }
