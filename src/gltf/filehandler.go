@@ -21,9 +21,10 @@ func LoadGLTF(file io.ReadCloser, desiredSize Types.MeshVector) ([]*Types.Mesh, 
 			// contains Min and Max attr (for dimension calc)
 			posAccessor := doc.Accessors[p.Attributes[gltf.POSITION]]
 			scaling := Types.MeshVector{
+				// axes inverted to convert to correct coordinate system
 				X: desiredSize.X / (posAccessor.Max[0] - posAccessor.Min[0]),
-				Y: desiredSize.Y / (posAccessor.Max[1] - posAccessor.Min[1]),
-				Z: desiredSize.Z / (posAccessor.Max[2] - posAccessor.Min[2]),
+				Y: desiredSize.Y / (posAccessor.Max[2] - posAccessor.Min[2]),
+				Z: desiredSize.Z / (posAccessor.Max[1] - posAccessor.Min[1]),
 			}
 			positions, err := gltfVec3(&doc, posAccessor, scaling)
 			if err != nil {
@@ -82,9 +83,10 @@ func gltfVec3(doc *gltf.Document, acc *gltf.Accessor, scaling Types.MeshVector) 
 	vectors := make([]Types.MeshVector, acc.Count)
 	for i := 0; i < acc.Count; i++ {
 		base := i * 12
+		// axes inverted to convert to correct coordinate system
 		x := math.Float32frombits(binary.LittleEndian.Uint32(raw[base+0:]))
-		y := math.Float32frombits(binary.LittleEndian.Uint32(raw[base+4:]))
-		z := math.Float32frombits(binary.LittleEndian.Uint32(raw[base+8:]))
+		y := -(math.Float32frombits(binary.LittleEndian.Uint32(raw[base+8:])))
+		z := math.Float32frombits(binary.LittleEndian.Uint32(raw[base+4:]))
 		vectors[i] = Types.MeshVector{X: float64(x) * scaling.X, Y: float64(y) * scaling.Y, Z: float64(z) * scaling.Z}
 	}
 
