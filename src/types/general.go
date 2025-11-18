@@ -32,7 +32,16 @@ type ColorCIE struct {
 //	X – from left (-X) to right (+X),
 //	Y – from the outside of the monitor (-Y) to the inside of the monitor (+Y),
 //	Z – from bottom (-Z) to top (+Z). 0,0,0 – center base.
-type Matrix [4][4]float32
+type Matrix [4][4]float64
+
+func (obj Matrix) toMeshMatrix() MeshMatrix {
+	return MeshMatrix{
+		obj[0][0], obj[0][1], obj[0][2], obj[0][3],
+		obj[1][0], obj[1][1], obj[1][2], obj[1][3],
+		obj[2][0], obj[2][1], obj[2][2], obj[2][3],
+		obj[3][0], obj[3][1], obj[3][2], obj[3][3],
+	}
+}
 
 // Rotation matrix, consist of 3*3 floats.
 // Stored as row-major matrix, i.e. each row of the matrix is stored as a 3-component vector.

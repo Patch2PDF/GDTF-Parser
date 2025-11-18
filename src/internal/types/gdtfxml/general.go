@@ -96,7 +96,7 @@ func (dest *ColorCIE) UnmarshalXMLAttr(attr xml.Attr) error {
 	return nil
 }
 
-type Matrix [4][4]float32
+type Matrix [4][4]float64
 
 // The transformation matrix consists 4 x 4 floats.
 // Stored in a row-major order.
@@ -120,11 +120,11 @@ func (dest *Matrix) UnmarshalXMLAttr(attr xml.Attr) error {
 			return fmt.Errorf("invalid structure for Matrix")
 		}
 		for column_index, column_value := range columns {
-			value, err := strconv.ParseFloat(column_value, 32)
+			value, err := strconv.ParseFloat(column_value, 64)
 			if err != nil {
 				return err
 			}
-			dest[index][column_index] = float32(value)
+			dest[index][column_index] = value
 		}
 	}
 	return nil
