@@ -31,6 +31,33 @@ func (obj *GeometryBase) ResolveReference() {
 	obj.Geometries.ResolveReference()
 }
 
+type MeshGenerator interface {
+	GenerateMesh(parentTransformation MeshMatrix) *Mesh
+}
+
+func (obj *GeometryBase) GenerateMesh(parentTransformation MeshMatrix) *Mesh {
+	var mesh1 Mesh
+	localTransformation := obj.Position.toMeshMatrix()
+	transformation := parentTransformation.Mul(localTransformation)
+	if obj.Model.Ptr != nil && obj.Model.Ptr.Mesh != nil {
+		mesh1 = obj.Model.Ptr.Mesh.Copy()
+		mesh1.RotateAndTranslate(transformation)
+	}
+	mesh2 := obj.Geometries.GenerateMesh(transformation)
+	return mesh1.Add(mesh2)
+}
+
+func GenerateMeshes[T MeshGenerator](source *[]T, parentTransformation MeshMatrix) *Mesh {
+	mesh := &Mesh{}
+	if source == nil {
+		return mesh
+	}
+	for i := range *source {
+		mesh.Add((*source)[i].GenerateMesh(parentTransformation))
+	}
+	return mesh
+}
+
 type Geometries struct {
 	GeometryList          []*Geometry
 	AxisList              []*Axis
@@ -94,6 +121,28 @@ func (obj *Geometries) ResolveReference() {
 	ResolveReferences(&obj.StructureList)
 	ResolveReferences(&obj.SupportList)
 	ResolveReferences(&obj.MagnetList)
+}
+
+func (obj *Geometries) GenerateMesh(parentTransformation MeshMatrix) *Mesh {
+	mesh := GenerateMeshes(&obj.GeometryList, parentTransformation)
+	mesh.Add(GenerateMeshes(&obj.AxisList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.FilterBeamList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.FilterColorList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.FilterGoboList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.FilterShaperList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.BeamList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.MediaServerLayerList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.MediaServerCameraList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.MediaServerMasterList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.DisplayList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.LaserList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.GeometryReferenceList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.WiringObjectList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.InventoryList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.StructureList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.SupportList, parentTransformation))
+	mesh.Add(GenerateMeshes(&obj.MagnetList, parentTransformation))
+	return mesh
 }
 
 type Geometry struct {
@@ -170,6 +219,23 @@ type GeometryReference struct {
 func (obj *GeometryReference) ResolveReference() {
 	obj.GeometryRef.Ptr = refPointers.Geometries[obj.GeometryRef.String]
 	obj.Model.Ptr = refPointers.Models[obj.Model.String]
+}
+
+func (obj *GeometryReference) GenerateMesh(parentTransformation MeshMatrix) *Mesh {
+	var mesh *Mesh
+	localTransformation := obj.Position.toMeshMatrix()
+	transformation := parentTransformation.Mul(localTransformation)
+	// if own model, replace parent mesh
+	if obj.Model.Ptr != nil {
+		temp := obj.Model.Ptr.Mesh.Copy()
+		mesh = &temp
+		geometries := obj.GeometryRef.Ptr.Ptr.(Geometries)
+		mesh.Add(geometries.GenerateMesh(transformation))
+	} else {
+		ptr := obj.GeometryRef.Ptr.Ptr.(MeshGenerator)
+		mesh = ptr.GenerateMesh(transformation)
+	}
+	return mesh
 }
 
 type Break struct {
