@@ -4,6 +4,8 @@ import (
 	"archive/zip"
 	"encoding/xml"
 	"fmt"
+	"image"
+	_ "image/png"
 	"io"
 	"log"
 	"path/filepath"
@@ -15,7 +17,7 @@ import (
 	Types "github.com/Patch2PDF/GDTF-Parser/pkg/types"
 )
 
-func ParseGDTF(filename string, readMeshes bool) (*Types.GDTF, error) {
+func ParseGDTF(filename string, readMeshes bool, readThumbnail bool) (*Types.GDTF, error) {
 	if filepath.Ext(filename) != ".gdtf" {
 		return nil, fmt.Errorf("%s is not a GDTF file", filename)
 	}
@@ -107,6 +109,21 @@ func ParseGDTF(filename string, readMeshes bool) (*Types.GDTF, error) {
 		}
 	}
 
+	if readThumbnail {
+		pngPath := parsedGDTF.FixtureType.Thumbnail.String + ".png"
+		if fileMap[pngPath] != nil {
+			file, err := fileMap[pngPath].Open()
+			if err != nil {
+				return nil, err
+			}
+			thumbnail, _, err := image.Decode(file)
+			if err != nil {
+				return nil, err
+			}
+			parsedGDTF.FixtureType.Thumbnail.Ptr = &thumbnail
+		}
+	}
+
 	return &parsedGDTF, nil
 }
 
@@ -117,7 +134,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	gdtf, err := ParseGDTF("test.gdtf", true)
+	gdtf, err := ParseGDTF("test.gdtf", true, true)
 	if err != nil {
 		log.Fatal(err)
 	}

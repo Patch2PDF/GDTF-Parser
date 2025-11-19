@@ -1,6 +1,10 @@
 package XMLTypes
 
-import Types "github.com/Patch2PDF/GDTF-Parser/pkg/types"
+import (
+	"image"
+
+	Types "github.com/Patch2PDF/GDTF-Parser/pkg/types"
+)
 
 type FixtureType struct {
 	FixtureTypeID    string    `xml:",attr"`
@@ -9,7 +13,7 @@ type FixtureType struct {
 	LongName         string    `xml:",attr"`
 	Manufacturer     string    `xml:",attr"`
 	Description      string    `xml:",attr"`
-	Thumbnail        *string   `xml:",attr"`
+	Thumbnail        string    `xml:",attr"`
 	ThumbnailOffsetX int       `xml:",attr"`
 	ThumbnailOffsetY int       `xml:",attr"`
 	CanHaveChildren  YesNoBool `xml:",attr"`
@@ -28,13 +32,15 @@ type FixtureType struct {
 
 func (fixtureType FixtureType) Parse() Types.FixtureType {
 	return Types.FixtureType{
-		FixtureTypeID:        fixtureType.FixtureTypeID,
-		Name:                 fixtureType.Name,
-		ShortName:            fixtureType.ShortName,
-		LongName:             fixtureType.LongName,
-		Manufacturer:         fixtureType.Manufacturer,
-		Description:          fixtureType.Description,
-		Thumbnail:            fixtureType.Thumbnail,
+		FixtureTypeID: fixtureType.FixtureTypeID,
+		Name:          fixtureType.Name,
+		ShortName:     fixtureType.ShortName,
+		LongName:      fixtureType.LongName,
+		Manufacturer:  fixtureType.Manufacturer,
+		Description:   fixtureType.Description,
+		Thumbnail: Types.NodeReference[image.Image]{
+			String: fixtureType.Thumbnail,
+		},
 		ThumbnailOffsetX:     fixtureType.ThumbnailOffsetX,
 		ThumbnailOffsetY:     fixtureType.ThumbnailOffsetY,
 		CanHaveChildren:      bool(fixtureType.CanHaveChildren),

@@ -1,5 +1,7 @@
 package Types
 
+import "image"
+
 type FixtureType struct {
 	FixtureTypeID    string
 	Name             string
@@ -7,7 +9,7 @@ type FixtureType struct {
 	LongName         string
 	Manufacturer     string
 	Description      string
-	Thumbnail        *string
+	Thumbnail        NodeReference[image.Image]
 	ThumbnailOffsetX int
 	ThumbnailOffsetY int
 	CanHaveChildren  bool
