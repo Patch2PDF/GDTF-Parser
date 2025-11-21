@@ -10,9 +10,8 @@ import (
 	"log"
 	"path/filepath"
 
+	GDTFMeshReader "github.com/Patch2PDF/GDTF-Mesh-Reader"
 	"github.com/Patch2PDF/GDTF-Mesh-Reader/pkg/MeshTypes"
-	FileHandlers "github.com/Patch2PDF/GDTF-Mesh-Reader/pkg/file_handlers"
-	Primitives "github.com/Patch2PDF/GDTF-Mesh-Reader/pkg/primitives"
 	XMLTypes "github.com/Patch2PDF/GDTF-Parser/internal/types/gdtfxml"
 	Types "github.com/Patch2PDF/GDTF-Parser/pkg/types"
 )
@@ -62,48 +61,35 @@ func ParseGDTF(filename string, readMeshes bool, readThumbnail bool) (*Types.GDT
 
 	if readMeshes {
 		for _, model := range parsedGDTF.FixtureType.Models {
-			desiredSize := MeshTypes.Vector{
-				X: float64(model.Length),
-				Y: float64(model.Width),
-				Z: float64(model.Height),
+			conf := GDTFMeshReader.ModelReaderConf{
+				File:          nil,
+				Filename:      nil,
+				PrimitiveType: model.PrimitiveType,
 			}
-			var mesh *MeshTypes.Mesh
-			if model.File != nil && *model.File != "" {
-				gltfPath := "models/gltf/" + *model.File + ".gltf"
-				glbPath := "models/gltf/" + *model.File + ".glb"
-				// prefer gltf, otherwise look for 3ds
-				threedsPath := "models/3ds/" + *model.File + ".3ds"
-				if fileMap[gltfPath] != nil {
-					gltfContent, _ := fileMap[gltfPath].Open()
-					meshes, err := FileHandlers.LoadGLTF(gltfContent, desiredSize)
-					if err != nil {
-						return nil, err
-					}
-					mesh = meshes[0]
-				} else if fileMap[glbPath] != nil {
-					gltfContent, _ := fileMap[glbPath].Open()
-					meshes, err := FileHandlers.LoadGLTF(gltfContent, desiredSize)
-					if err != nil {
-						return nil, err
-					}
-					mesh = meshes[0]
-				} else if fileMap[threedsPath] != nil {
-					threeDSContent, _ := fileMap[threedsPath].Open()
-					data, err := io.ReadAll(threeDSContent)
-					if err != nil {
-						return nil, err
-					}
-					mesh, err = FileHandlers.Load3DS(&data, &desiredSize)
-					if err != nil {
-						return nil, err
-					}
+
+			if model.File != nil && *model.File != "" && model.PrimitiveType == "Undefined" {
+				filename := getGDTFModelFileName(fileMap, *model.File)
+				if filename == nil {
+					return nil, fmt.Errorf("could not find model file '%s' in GDTF File", *model.File)
 				}
-			} else {
-				if Primitives.Primitives[model.PrimitiveType] != nil {
-					tempMesh := Primitives.Primitives[model.PrimitiveType].Copy()
-					mesh = &tempMesh
-					mesh.ScaleToDimensions(&desiredSize)
+				file, err := fileMap[*filename].Open()
+				if err != nil {
+					return nil, err
 				}
+				conf.File = file
+				conf.Filename = filename
+			}
+
+			mesh, err := GDTFMeshReader.GetModel(
+				conf,
+				MeshTypes.Vector{
+					X: float64(model.Length),
+					Y: float64(model.Width),
+					Z: float64(model.Height),
+				},
+			)
+			if err != nil {
+				return nil, err
 			}
 			model.Mesh = mesh
 		}
@@ -127,9 +113,24 @@ func ParseGDTF(filename string, readMeshes bool, readThumbnail bool) (*Types.GDT
 	return &parsedGDTF, nil
 }
 
+func getGDTFModelFileName(fileMap map[string]*zip.File, modelName string) *string {
+	// prefer gltf, otherwise look for 3ds
+	modelPaths := []string{
+		"models/gltf/" + modelName + ".gltf",
+		"models/gltf/" + modelName + ".glb",
+		"models/3ds/" + modelName + ".3ds",
+	}
+	for _, path := range modelPaths {
+		if fileMap[path] != nil {
+			return &path
+		}
+	}
+	return nil
+}
+
 func main() {
 	// Load Primitive Meshes
-	err := Primitives.LoadPrimitives()
+	err := GDTFMeshReader.LoadPrimitives()
 	if err != nil {
 		log.Fatal(err)
 	}
