@@ -1,8 +1,6 @@
 package gdtfxml_test
 
 import (
-	"encoding/xml"
-	"reflect"
 	"testing"
 
 	XMLTypes "github.com/Patch2PDF/GDTF-Parser/internal/types/gdtfxml"
@@ -32,14 +30,16 @@ func TestParseWheel(t *testing.T) {
         <Slot Name="Gobo 4" MediaFileName="Gobo4" />
         <Slot Name="Gobo 5" MediaFileName="Gobo5" />
     </Wheel>
+		<Wheel Name="PrismWheel">
+			<Slot Name="Open" />
+			<Slot Name="Prism">
+				<Facet Rotation="{0.6, 0.0, 0.0}{ 0.0, 0.6, 0.0}{ -0.12,  0.15, 1.0}"/>
+				<Facet Rotation="{0.6, 0.0, 0.0}{ 0.0, 0.6, 0.0}{  0.17,  0.0,  1.0}"/>
+				<Facet Rotation="{0.6, 0.0, 0.0}{ 0.0, 0.6, 0.0}{ -0.12, -0.15, 1.0}"/>
+			</Slot>
+		</Wheel>
 	</Wheels>
 	`
-
-	var result wheelTest
-	err := xml.Unmarshal([]byte(xmlData), &result)
-	if err != nil {
-		t.Errorf("Wheel: XML Unmarshal threw error: %s", err)
-	}
 
 	gobo1 := "Gobo1"
 	gobo2 := "Gobo2"
@@ -132,9 +132,41 @@ func TestParseWheel(t *testing.T) {
 				},
 			},
 		},
+		{
+			Name: "PrismWheel",
+			WheelSlots: []XMLTypes.WheelSlot{
+				{
+					Name: "Open",
+				},
+				{
+					Name: "Prism",
+					PrismFacets: []XMLTypes.PrismFacet{
+						{
+							Rotation: XMLTypes.Rotation{
+								[3]float32{0.6, 0.0, 0.0},
+								[3]float32{0.0, 0.6, 0.0},
+								[3]float32{-0.12, 0.15, 1.0},
+							},
+						},
+						{
+							Rotation: XMLTypes.Rotation{
+								[3]float32{0.6, 0.0, 0.0},
+								[3]float32{0.0, 0.6, 0.0},
+								[3]float32{0.17, 0.0, 1.0},
+							},
+						},
+						{
+							Rotation: XMLTypes.Rotation{
+								[3]float32{0.6, 0.0, 0.0},
+								[3]float32{0.0, 0.6, 0.0},
+								[3]float32{-0.12, -0.15, 1.0},
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 
-	if !reflect.DeepEqual(result.Wheels, want) {
-		t.Errorf("Wheel: XML Unmarshaling Output does not match")
-	}
+	parsingTest(t, xmlData, "Wheel", wheelTest{Wheels: want})
 }
