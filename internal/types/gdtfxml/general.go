@@ -16,7 +16,7 @@ type XMLDMXValue = string
 
 type DMXAddress struct {
 	Address  int16
-	Universe int
+	Universe int // 0 indexed
 }
 
 func (b *DMXAddress) UnmarshalXMLAttr(attr xml.Attr) error {
@@ -152,7 +152,7 @@ func (dest *Rotation) UnmarshalXMLAttr(attr xml.Attr) error {
 			return fmt.Errorf("invalid structure for Rotation")
 		}
 		for column_index, column_value := range columns {
-			value, err := strconv.ParseFloat(column_value, 32)
+			value, err := strconv.ParseFloat(strings.Trim(column_value, " "), 32)
 			if err != nil {
 				return err
 			}
