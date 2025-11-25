@@ -18,7 +18,7 @@ var geometryXML = `
     <Geometry Name="Base1" Model="Base1">
         <Axis Name="Yoke1" Model="Yoke1" Position="{1.000000,0.000000,0.000000,0.000000}{0.000000,1.000000,0.000000,0.000000}{0.000000,0.000000,1.000000,-0.200000}{0.000000,0.000000,0.000000,1.000000}">
             <GeometryReference Name="Head1" Position="{1.000000,0.000000,0.000000,-0.550000}{0.000000,1.000000,0.000000,0.000000}{0.000000,0.000000,1.000000,-0.125000}{0.000000,0.000000,0.000000,1.000000}" Geometry="Base2">
-                <Break DMXOffset="1" />
+                <Break DMXOffset="512" />
             </GeometryReference>
             <GeometryReference Name="Head2" Position="{1.000000,0.000000,0.000000,-0.183000}{0.000000,1.000000,0.000000,0.000000}{0.000000,0.000000,1.000000,-0.125000}{0.000000,0.000000,0.000000,1.000000}" Geometry="Base2">
                 <Break DMXOffset="8" />
@@ -118,7 +118,7 @@ var geometryStruct = XMLTypes.Geometries{
 									},
 									Breaks: []XMLTypes.Break{
 										{
-											DMXOffset: XMLTypes.DMXAddress{Universe: 0, Address: 1},
+											DMXOffset: XMLTypes.DMXAddress{Universe: 0, Address: 511},
 										},
 									},
 								},
@@ -133,7 +133,7 @@ var geometryStruct = XMLTypes.Geometries{
 									},
 									Breaks: []XMLTypes.Break{
 										{
-											DMXOffset: XMLTypes.DMXAddress{Universe: 0, Address: 8},
+											DMXOffset: XMLTypes.DMXAddress{Universe: 0, Address: 7},
 										},
 									},
 								},
@@ -148,7 +148,7 @@ var geometryStruct = XMLTypes.Geometries{
 									},
 									Breaks: []XMLTypes.Break{
 										{
-											DMXOffset: XMLTypes.DMXAddress{Universe: 0, Address: 15},
+											DMXOffset: XMLTypes.DMXAddress{Universe: 0, Address: 14},
 										},
 									},
 								},
@@ -163,7 +163,7 @@ var geometryStruct = XMLTypes.Geometries{
 									},
 									Breaks: []XMLTypes.Break{
 										{
-											DMXOffset: XMLTypes.DMXAddress{Universe: 0, Address: 22},
+											DMXOffset: XMLTypes.DMXAddress{Universe: 0, Address: 21},
 										},
 									},
 								},

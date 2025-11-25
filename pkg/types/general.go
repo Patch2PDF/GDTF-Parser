@@ -12,8 +12,8 @@ type NodeReference[T any] struct {
 }
 
 type DMXAddress struct {
-	Address  int16
-	Universe int // 0 indexed
+	Address  int16 // 0 indexed
+	Universe int   // 0 indexed
 }
 
 // format xyY (X,Y,Y2)

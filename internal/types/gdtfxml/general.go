@@ -14,9 +14,10 @@ import (
 // see gdtf https://www.gdtf.eu/gdtf/file-spec/file-format-definition/#attrtype-dmxvalue
 type XMLDMXValue = string
 
+// DMX Address, NOTE: values are 0 indexed (e.g. Universe 0 being 1 in real life)
 type DMXAddress struct {
-	Address  int16
-	Universe int // 0 indexed
+	Address  int16 // 0 indexed
+	Universe int   // 0 indexed
 }
 
 func (b *DMXAddress) UnmarshalXMLAttr(attr xml.Attr) error {
@@ -38,8 +39,8 @@ func (b *DMXAddress) UnmarshalXMLAttr(attr xml.Attr) error {
 		if err != nil {
 			return err
 		}
-		b.Address = int16(absolute % 512)
-		b.Universe = int(absolute / 512)
+		b.Address = int16((absolute - 1) % 512)
+		b.Universe = int((absolute - 1) / 512)
 	}
 	return nil
 }
