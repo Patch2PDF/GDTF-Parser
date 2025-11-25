@@ -1,0 +1,8 @@
+.DS_Store
+*.stl
+
+# build file
+GDTF-Parser
+
+# for now exclude all test gdtf's
+*.gdtf
