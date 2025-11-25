@@ -49,7 +49,7 @@ func (object Emitter) Parse() Types.Emitter {
 }
 
 type Measurement struct {
-	Phyiscal          float32             `xml:",attr"`
+	Physical          float32             `xml:",attr"`
 	LuminousIntensity float32             `xml:",attr"`
 	Transmission      float32             `xml:",attr"`
 	InterpolationTo   string              `xml:",attr"`
@@ -58,7 +58,7 @@ type Measurement struct {
 
 func (object Measurement) Parse() Types.Measurement {
 	return Types.Measurement{
-		Phyiscal:          object.Phyiscal,
+		Phyiscal:          object.Physical,
 		LuminousIntensity: object.LuminousIntensity,
 		Transmission:      object.Transmission,
 		InterpolationTo:   object.InterpolationTo,
