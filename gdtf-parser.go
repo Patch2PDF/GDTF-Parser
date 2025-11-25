@@ -138,8 +138,6 @@ func ParseGDTFByFilename(filename string, readMeshes bool, readThumbnail bool) (
 	return ParseGDTFZipReader(&gdtf.Reader, readMeshes, readThumbnail)
 }
 
-// TODO: test this one
-
 // Parse a GDTF file
 //
 // # Args:
