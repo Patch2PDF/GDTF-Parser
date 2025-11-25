@@ -19,3 +19,9 @@ func parsingTest[T any](t *testing.T, xmlData string, domain string, want T) {
 		}
 	}
 }
+
+func floatPtr(v float32) *float32   { return &v }
+func float64Ptr(v float64) *float64 { return &v }
+
+func intPtr(v int) *int       { return &v }
+func strPtr(v string) *string { return &v }
