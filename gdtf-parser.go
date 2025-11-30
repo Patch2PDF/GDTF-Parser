@@ -82,7 +82,7 @@ func ParseGDTFZipReader(zipfile *zip.Reader, readMeshes bool, readThumbnail bool
 
 			mesh, err := GDTFMeshReader.GetModel(
 				conf,
-				MeshTypes.Vector{
+				&MeshTypes.Vector{
 					X: float64(model.Length),
 					Y: float64(model.Width),
 					Z: float64(model.Height),
