@@ -4,10 +4,10 @@ import "github.com/Patch2PDF/GDTF-Mesh-Reader/pkg/MeshTypes"
 
 type Model struct {
 	Name            string
-	Length          float32
-	Width           float32
-	Height          float32
-	PrimitiveType   string // enum
+	Length          float32 // in meter
+	Width           float32 // in meter
+	Height          float32 // in meter
+	PrimitiveType   string  // enum
 	File            *string
 	SVGOffsetX      float32
 	SVGOffsetY      float32
