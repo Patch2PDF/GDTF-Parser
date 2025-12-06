@@ -6,14 +6,14 @@ type AttributeDefinitions struct {
 	Attributes       []*Attribute
 }
 
-func (obj *AttributeDefinitions) CreateReferencePointer() {
-	CreateReferencePointers(&obj.ActivationGroups)
-	CreateReferencePointers(&obj.FeatureGroups)
-	CreateReferencePointers(&obj.Attributes)
+func (obj *AttributeDefinitions) CreateReferencePointer(refPointers *ReferencePointers) {
+	CreateReferencePointers(refPointers, &obj.ActivationGroups)
+	CreateReferencePointers(refPointers, &obj.FeatureGroups)
+	CreateReferencePointers(refPointers, &obj.Attributes)
 }
 
-func (obj *AttributeDefinitions) ResolveReference() {
-	ResolveReferences(&obj.Attributes)
+func (obj *AttributeDefinitions) ResolveReference(refPointers *ReferencePointers) {
+	ResolveReferences(refPointers, &obj.Attributes)
 }
 
 type ActivationGroup struct {
@@ -21,7 +21,7 @@ type ActivationGroup struct {
 	Attributes []*Attribute
 }
 
-func (obj *ActivationGroup) CreateReferencePointer() {
+func (obj *ActivationGroup) CreateReferencePointer(refPointers *ReferencePointers) {
 	refPointers.ActivationGroups[obj.Name] = obj
 }
 
@@ -31,7 +31,7 @@ type FeatureGroup struct {
 	Features []*Feature
 }
 
-func (obj *FeatureGroup) CreateReferencePointer() {
+func (obj *FeatureGroup) CreateReferencePointer(refPointers *ReferencePointers) {
 	for _, element := range obj.Features {
 		refPointers.Features[obj.Name+"."+element.Name] = element
 	}
@@ -53,7 +53,7 @@ type Attribute struct {
 	SubPhysicalUnits *[]*SubPhysicalUnit
 }
 
-func (obj *Attribute) CreateReferencePointer() {
+func (obj *Attribute) CreateReferencePointer(refPointers *ReferencePointers) {
 	refPointers.Attributes[obj.Name] = obj
 	// TODO: find out reference name for SubPhysicalUnits
 	// for _, element := range *obj.SubPhysicalUnits {
@@ -61,7 +61,7 @@ func (obj *Attribute) CreateReferencePointer() {
 	// }
 }
 
-func (obj *Attribute) ResolveReference() {
+func (obj *Attribute) ResolveReference(refPointers *ReferencePointers) {
 	if obj.ActivationGroup.String != "" {
 		obj.ActivationGroup.Ptr = refPointers.ActivationGroups[obj.ActivationGroup.String]
 		refPointers.ActivationGroups[obj.ActivationGroup.String].Attributes =

@@ -12,12 +12,12 @@ type PhysicalDescription struct {
 	Properties            *Properties
 }
 
-func (obj *PhysicalDescription) CreateReferencePointer() {
-	CreateReferencePointers(&obj.Emitters)
-	CreateReferencePointers(&obj.Filters)
-	// CreateReferencePointers(&obj.AdditionalColorSpaces) // TODO: find out how they differentiate between Main and additional in references
-	CreateReferencePointers(&obj.Gamuts)
-	CreateReferencePointers(&obj.DMXProfiles)
+func (obj *PhysicalDescription) CreateReferencePointer(refPointers *ReferencePointers) {
+	CreateReferencePointers(refPointers, &obj.Emitters)
+	CreateReferencePointers(refPointers, &obj.Filters)
+	// CreateReferencePointers(refPointers, &obj.AdditionalColorSpaces) // TODO: find out how they differentiate between Main and additional in references
+	CreateReferencePointers(refPointers, &obj.Gamuts)
+	CreateReferencePointers(refPointers, &obj.DMXProfiles)
 }
 
 type Emitter struct {
@@ -28,7 +28,7 @@ type Emitter struct {
 	Measurements       []*Measurement
 }
 
-func (obj *Emitter) CreateReferencePointer() {
+func (obj *Emitter) CreateReferencePointer(refPointers *ReferencePointers) {
 	refPointers.Emitters[obj.Name] = obj
 }
 
@@ -51,7 +51,7 @@ type Filter struct {
 	Measurements []*Measurement
 }
 
-func (obj *Filter) CreateReferencePointer() {
+func (obj *Filter) CreateReferencePointer(refPointers *ReferencePointers) {
 	refPointers.Filters[obj.Name] = obj
 }
 
@@ -69,7 +69,7 @@ type Gamut struct {
 	Points []*ColorCIE
 }
 
-func (obj *Gamut) CreateReferencePointer() {
+func (obj *Gamut) CreateReferencePointer(refPointers *ReferencePointers) {
 	refPointers.Gamuts[obj.Name] = obj
 }
 
@@ -78,7 +78,7 @@ type DMXProfile struct {
 	Points []*Point
 }
 
-func (obj *DMXProfile) CreateReferencePointer() {
+func (obj *DMXProfile) CreateReferencePointer(refPointers *ReferencePointers) {
 	refPointers.DMXProfiles[obj.Name] = obj
 }
 

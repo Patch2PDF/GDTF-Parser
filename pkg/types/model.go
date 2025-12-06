@@ -18,6 +18,6 @@ type Model struct {
 	Mesh            *MeshTypes.Mesh
 }
 
-func (obj *Model) CreateReferencePointer() {
+func (obj *Model) CreateReferencePointer(refPointers *ReferencePointers) {
 	refPointers.Models[obj.Name] = obj
 }

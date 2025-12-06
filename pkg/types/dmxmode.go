@@ -9,7 +9,7 @@ type DMXMode struct {
 	FTMacros    []*FTMacro
 }
 
-func (obj *DMXMode) CreateReferencePointer() {
+func (obj *DMXMode) CreateReferencePointer(refPointers *ReferencePointers) {
 	refPointers.DMXModes[obj.Name] = obj
 	for _, element := range obj.DMXChannels {
 		refPointers.DMXChannels[obj.Name+"."+element.GetName()] = element
@@ -28,12 +28,12 @@ func (obj *DMXMode) CreateReferencePointer() {
 	}
 }
 
-func (obj *DMXMode) ResolveReference() {
+func (obj *DMXMode) ResolveReference(refPointers *ReferencePointers) {
 	obj.Geometry.Ptr = refPointers.Geometries[obj.Geometry.String]
 	for i := range obj.DMXChannels {
-		(obj.DMXChannels)[i].ResolveReference(obj)
+		(obj.DMXChannels)[i].ResolveReference(refPointers, obj)
 	}
-	ResolveReferences(&obj.FTMacros)
+	ResolveReferences(refPointers, &obj.FTMacros)
 }
 
 type DMXChannel struct {
@@ -50,10 +50,10 @@ func (element DMXChannel) GetName() string {
 	return element.Geometry + "_" + element.LogicalChannels[0].Attribute.String
 }
 
-func (obj *DMXChannel) ResolveReference(mode *DMXMode) {
+func (obj *DMXChannel) ResolveReference(refPointers *ReferencePointers, mode *DMXMode) {
 	obj.InitialFunction.Ptr = refPointers.ChannelFunctions[mode.Name+"."+obj.InitialFunction.String]
 	// obj.Geometry.Ptr = refPointers.Geometries[obj.Geometry.String] //TODO: dmxchannels only contain the last part of the reference name -> other solution required?
-	ResolveReferences(&obj.LogicalChannels)
+	ResolveReferences(refPointers, &obj.LogicalChannels)
 }
 
 type LogicalChannel struct {
@@ -65,9 +65,9 @@ type LogicalChannel struct {
 	ChannelFunctions   []*ChannelFunction
 }
 
-func (obj *LogicalChannel) ResolveReference() {
+func (obj *LogicalChannel) ResolveReference(refPointers *ReferencePointers) {
 	obj.Attribute.Ptr = refPointers.Attributes[obj.Attribute.String]
-	ResolveReferences(&obj.ChannelFunctions)
+	ResolveReferences(refPointers, &obj.ChannelFunctions)
 }
 
 type ChannelFunction struct {
@@ -96,7 +96,7 @@ type ChannelFunction struct {
 	SubChannelSets    []*SubChannelSet
 }
 
-func (obj *ChannelFunction) ResolveReference() {
+func (obj *ChannelFunction) ResolveReference(refPointers *ReferencePointers) {
 	obj.Attribute.Ptr = refPointers.Attributes[obj.Attribute.String]
 	obj.Wheel.Ptr = refPointers.Wheels[obj.Wheel.String]
 	obj.Emitter.Ptr = refPointers.Emitters[obj.Emitter.String]
@@ -105,8 +105,8 @@ func (obj *ChannelFunction) ResolveReference() {
 	obj.Gamut.Ptr = refPointers.Gamuts[obj.Gamut.String]
 	obj.DMXProfile.Ptr = refPointers.DMXProfiles[obj.DMXProfile.String]
 
-	ResolveReferences(&obj.ChannelSets)
-	ResolveReferences(&obj.SubChannelSets)
+	ResolveReferences(refPointers, &obj.ChannelSets)
+	ResolveReferences(refPointers, &obj.SubChannelSets)
 }
 
 type ChannelSet struct {
@@ -117,7 +117,7 @@ type ChannelSet struct {
 	WheelSlot    NodeReference[WheelSlot]
 }
 
-func (obj *ChannelSet) ResolveReference() {
+func (obj *ChannelSet) ResolveReference(refPointers *ReferencePointers) {
 	obj.WheelSlot.Ptr = refPointers.WheelSlots[obj.WheelSlot.String]
 }
 
@@ -129,7 +129,7 @@ type SubChannelSet struct {
 	DMXProfile      NodeReference[DMXProfile]
 }
 
-func (obj *SubChannelSet) ResolveReference() {
+func (obj *SubChannelSet) ResolveReference(refPointers *ReferencePointers) {
 	obj.SubPhysicalUnit.Ptr = refPointers.SubPhysicalUnits[obj.SubPhysicalUnit.String]
 	obj.DMXProfile.Ptr = refPointers.DMXProfiles[obj.DMXProfile.String]
 }
@@ -147,17 +147,17 @@ type FTMacro struct {
 	MacroDMXs       []*MacroDMX
 }
 
-func (obj *FTMacro) ResolveReference() {
+func (obj *FTMacro) ResolveReference(refPointers *ReferencePointers) {
 	obj.ChannelFunction.Ptr = refPointers.ChannelFunctions[obj.ChannelFunction.String]
-	ResolveReferences(&obj.MacroDMXs)
+	ResolveReferences(refPointers, &obj.MacroDMXs)
 }
 
 type MacroDMX struct {
 	Steps []*MacroDMXStep
 }
 
-func (obj *MacroDMX) ResolveReference() {
-	ResolveReferences(&obj.Steps)
+func (obj *MacroDMX) ResolveReference(refPointers *ReferencePointers) {
+	ResolveReferences(refPointers, &obj.Steps)
 }
 
 type MacroDMXStep struct {
@@ -165,8 +165,8 @@ type MacroDMXStep struct {
 	DMXValues []*MacroDMXValue
 }
 
-func (obj *MacroDMXStep) ResolveReference() {
-	ResolveReferences(&obj.DMXValues)
+func (obj *MacroDMXStep) ResolveReference(refPointers *ReferencePointers) {
+	ResolveReferences(refPointers, &obj.DMXValues)
 }
 
 type MacroDMXValue struct {
@@ -174,6 +174,6 @@ type MacroDMXValue struct {
 	DMXChannel NodeReference[DMXChannel]
 }
 
-func (obj *MacroDMXValue) ResolveReference() {
+func (obj *MacroDMXValue) ResolveReference(refPointers *ReferencePointers) {
 	obj.DMXChannel.Ptr = refPointers.DMXChannels[obj.DMXChannel.String]
 }
