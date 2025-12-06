@@ -11,12 +11,12 @@ type GDTF struct {
 	FixtureType FixtureType
 }
 
-func (obj *GDTF) CreateReferencePointer() {
-	obj.FixtureType.CreateReferencePointer()
+func (obj *GDTF) CreateReferencePointer(refPointers *ReferencePointers) {
+	obj.FixtureType.CreateReferencePointer(refPointers)
 }
 
-func (obj *GDTF) ResolveReference() {
-	obj.FixtureType.ResolveReference()
+func (obj *GDTF) ResolveReference(refPointers *ReferencePointers) {
+	obj.FixtureType.ResolveReference(refPointers)
 }
 
 // Assemble a mesh based on entire geometry

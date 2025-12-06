@@ -9,8 +9,8 @@ type Protocol struct {
 	CITP             []*CITP
 }
 
-func (obj *Protocol) ResolveReference() {
-	ResolveReferences(&obj.RDM)
+func (obj *Protocol) ResolveReference(refPointers *ReferencePointers) {
+	ResolveReferences(refPointers, &obj.RDM)
 }
 
 type RDM struct {
@@ -19,8 +19,8 @@ type RDM struct {
 	SoftwareVersions []*RDMSoftwareVersion
 }
 
-func (obj *RDM) ResolveReference() {
-	ResolveReferences(&obj.SoftwareVersions)
+func (obj *RDM) ResolveReference(refPointers *ReferencePointers) {
+	ResolveReferences(refPointers, &obj.SoftwareVersions)
 }
 
 type RDMSoftwareVersion struct {
@@ -28,8 +28,8 @@ type RDMSoftwareVersion struct {
 	DMXPersonalities []*RDMDMXPersonality
 }
 
-func (obj *RDMSoftwareVersion) ResolveReference() {
-	ResolveReferences(&obj.DMXPersonalities)
+func (obj *RDMSoftwareVersion) ResolveReference(refPointers *ReferencePointers) {
+	ResolveReferences(refPointers, &obj.DMXPersonalities)
 }
 
 type RDMDMXPersonality struct {
@@ -37,7 +37,7 @@ type RDMDMXPersonality struct {
 	DMXMode NodeReference[DMXMode] // reference to DMX Mode
 }
 
-func (obj *RDMDMXPersonality) ResolveReference() {
+func (obj *RDMDMXPersonality) ResolveReference(refPointers *ReferencePointers) {
 	obj.DMXMode.Ptr = refPointers.DMXModes[obj.DMXMode.String]
 }
 

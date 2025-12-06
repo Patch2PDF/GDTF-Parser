@@ -5,15 +5,15 @@ type Wheel struct {
 	WheelSlots []*WheelSlot
 }
 
-func (obj *Wheel) CreateReferencePointer() {
+func (obj *Wheel) CreateReferencePointer(refPointers *ReferencePointers) {
 	refPointers.Wheels[obj.Name] = obj
 	for _, element := range obj.WheelSlots {
 		refPointers.WheelSlots[obj.Name+"."+element.Name] = element
 	}
 }
 
-func (obj *Wheel) ResolveReference() {
-	ResolveReferences(&obj.WheelSlots)
+func (obj *Wheel) ResolveReference(refPointers *ReferencePointers) {
+	ResolveReferences(refPointers, &obj.WheelSlots)
 }
 
 type WheelSlot struct {
@@ -25,7 +25,7 @@ type WheelSlot struct {
 	AnimationSystems []*AnimationSystem
 }
 
-func (obj *WheelSlot) ResolveReference() {
+func (obj *WheelSlot) ResolveReference(refPointers *ReferencePointers) {
 	obj.Filter.Ptr = refPointers.Filters[obj.Filter.String]
 }
 

@@ -26,20 +26,20 @@ type FixtureType struct {
 	Protocols            Protocol
 }
 
-func (obj *FixtureType) CreateReferencePointer() {
-	obj.AttributeDefinitions.CreateReferencePointer()
-	CreateReferencePointers(&obj.Wheels)
-	CreateReferencePointers(&obj.PhysicalDescriptions)
-	CreateReferencePointers(&obj.Models)
-	obj.Geometries.CreateGeometryReferencePointer("")
-	CreateReferencePointersMap(&obj.DMXModes)
-	// CreateReferencePointers(&obj.Revisions)
-	// obj.Protocols.CreateReferencePointer()
+func (obj *FixtureType) CreateReferencePointer(refPointers *ReferencePointers) {
+	obj.AttributeDefinitions.CreateReferencePointer(refPointers)
+	CreateReferencePointers(refPointers, &obj.Wheels)
+	CreateReferencePointers(refPointers, &obj.PhysicalDescriptions)
+	CreateReferencePointers(refPointers, &obj.Models)
+	obj.Geometries.CreateGeometryReferencePointer(refPointers, "")
+	CreateReferencePointersMap(refPointers, &obj.DMXModes)
+	// CreateReferencePointers(refPointers, &obj.Revisions)
+	// obj.Protocols.CreateReferencePointer(refPointers)
 }
 
-func (obj *FixtureType) ResolveReference() {
-	obj.AttributeDefinitions.ResolveReference()
-	ResolveReferences(&obj.Wheels)
-	obj.Geometries.ResolveReference()
-	ResolveReferencesMap(&obj.DMXModes)
+func (obj *FixtureType) ResolveReference(refPointers *ReferencePointers) {
+	obj.AttributeDefinitions.ResolveReference(refPointers)
+	ResolveReferences(refPointers, &obj.Wheels)
+	obj.Geometries.ResolveReference(refPointers)
+	ResolveReferencesMap(refPointers, &obj.DMXModes)
 }

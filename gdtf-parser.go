@@ -52,11 +52,13 @@ func ParseGDTFZipReader(zipfile *zip.Reader, readMeshes bool, readThumbnail bool
 	// parse XML structs into desired destination structs (kept seperate for breaking changes in GDTF version)
 	parsedGDTF := gdtfContent.Parse()
 
+	refPointers := Types.CreateRefPointersMap()
+
 	// create pointers for referencing
-	parsedGDTF.CreateReferencePointer()
+	parsedGDTF.CreateReferencePointer(refPointers)
 
 	// resolve pointer references
-	parsedGDTF.ResolveReference()
+	parsedGDTF.ResolveReference(refPointers)
 
 	if readMeshes {
 		for _, model := range parsedGDTF.FixtureType.Models {

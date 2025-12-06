@@ -19,18 +19,18 @@ type GeometryBase struct {
 	Geometries
 }
 
-func (obj *GeometryBase) CreateGeometryReferencePointer(parentPrefix string) {
+func (obj *GeometryBase) CreateGeometryReferencePointer(refPointers *ReferencePointers, parentPrefix string) {
 	newParentPrefix := strings.Trim(parentPrefix+"."+obj.Name, ".")
 	refPointers.Geometries[newParentPrefix] = &GeometryNodeReference{
 		Ptr:  obj,
 		Type: reflect.TypeOf(obj).String(),
 	}
-	obj.Geometries.CreateGeometryReferencePointer(newParentPrefix)
+	obj.Geometries.CreateGeometryReferencePointer(refPointers, newParentPrefix)
 }
 
-func (obj *GeometryBase) ResolveReference() {
+func (obj *GeometryBase) ResolveReference(refPointers *ReferencePointers) {
 	obj.Model.Ptr = refPointers.Models[obj.Model.String]
-	obj.Geometries.ResolveReference()
+	obj.Geometries.ResolveReference(refPointers)
 }
 
 type MeshGenerator interface {
@@ -83,46 +83,46 @@ type Geometries struct {
 	Parent *GeometryNodeReference
 }
 
-func (obj *Geometries) CreateGeometryReferencePointer(parentPrefix string) {
-	CreateGeometryReferencePointers(&obj.GeometryList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.AxisList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.FilterBeamList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.FilterColorList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.FilterGoboList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.FilterShaperList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.BeamList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.MediaServerLayerList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.MediaServerCameraList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.MediaServerMasterList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.DisplayList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.LaserList, parentPrefix)
-	// CreateReferencePointers(&obj.GeometryReferenceList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.WiringObjectList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.InventoryList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.StructureList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.SupportList, parentPrefix)
-	CreateGeometryReferencePointers(&obj.MagnetList, parentPrefix)
+func (obj *Geometries) CreateGeometryReferencePointer(refPointers *ReferencePointers, parentPrefix string) {
+	CreateGeometryReferencePointers(refPointers, &obj.GeometryList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.AxisList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.FilterBeamList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.FilterColorList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.FilterGoboList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.FilterShaperList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.BeamList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.MediaServerLayerList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.MediaServerCameraList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.MediaServerMasterList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.DisplayList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.LaserList, parentPrefix)
+	// CreateReferencePointers(refPointers, &obj.GeometryReferenceList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.WiringObjectList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.InventoryList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.StructureList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.SupportList, parentPrefix)
+	CreateGeometryReferencePointers(refPointers, &obj.MagnetList, parentPrefix)
 }
 
-func (obj *Geometries) ResolveReference() {
-	ResolveReferences(&obj.GeometryList)
-	ResolveReferences(&obj.AxisList)
-	ResolveReferences(&obj.FilterBeamList)
-	ResolveReferences(&obj.FilterColorList)
-	ResolveReferences(&obj.FilterGoboList)
-	ResolveReferences(&obj.FilterShaperList)
-	ResolveReferences(&obj.BeamList)
-	ResolveReferences(&obj.MediaServerLayerList)
-	ResolveReferences(&obj.MediaServerCameraList)
-	ResolveReferences(&obj.MediaServerMasterList)
-	ResolveReferences(&obj.DisplayList)
-	ResolveReferences(&obj.LaserList)
-	ResolveReferences(&obj.GeometryReferenceList)
-	ResolveReferences(&obj.WiringObjectList)
-	ResolveReferences(&obj.InventoryList)
-	ResolveReferences(&obj.StructureList)
-	ResolveReferences(&obj.SupportList)
-	ResolveReferences(&obj.MagnetList)
+func (obj *Geometries) ResolveReference(refPointers *ReferencePointers) {
+	ResolveReferences(refPointers, &obj.GeometryList)
+	ResolveReferences(refPointers, &obj.AxisList)
+	ResolveReferences(refPointers, &obj.FilterBeamList)
+	ResolveReferences(refPointers, &obj.FilterColorList)
+	ResolveReferences(refPointers, &obj.FilterGoboList)
+	ResolveReferences(refPointers, &obj.FilterShaperList)
+	ResolveReferences(refPointers, &obj.BeamList)
+	ResolveReferences(refPointers, &obj.MediaServerLayerList)
+	ResolveReferences(refPointers, &obj.MediaServerCameraList)
+	ResolveReferences(refPointers, &obj.MediaServerMasterList)
+	ResolveReferences(refPointers, &obj.DisplayList)
+	ResolveReferences(refPointers, &obj.LaserList)
+	ResolveReferences(refPointers, &obj.GeometryReferenceList)
+	ResolveReferences(refPointers, &obj.WiringObjectList)
+	ResolveReferences(refPointers, &obj.InventoryList)
+	ResolveReferences(refPointers, &obj.StructureList)
+	ResolveReferences(refPointers, &obj.SupportList)
+	ResolveReferences(refPointers, &obj.MagnetList)
 }
 
 func (obj *Geometries) GenerateMesh(parentTransformation MeshTypes.Matrix) *MeshTypes.Mesh {
@@ -187,9 +187,9 @@ type Beam struct {
 	EmitterSpectrum  NodeReference[Emitter]
 }
 
-func (obj *Beam) ResolveReference() {
+func (obj *Beam) ResolveReference(refPointers *ReferencePointers) {
 	obj.EmitterSpectrum.Ptr = refPointers.Emitters[obj.EmitterSpectrum.String]
-	obj.GeometryBase.ResolveReference()
+	obj.GeometryBase.ResolveReference(refPointers)
 }
 
 type MediaServerLayer struct {
@@ -218,7 +218,7 @@ type GeometryReference struct {
 	// do we need to link a parent for this Geometry Type?
 }
 
-func (obj *GeometryReference) ResolveReference() {
+func (obj *GeometryReference) ResolveReference(refPointers *ReferencePointers) {
 	obj.GeometryRef.Ptr = refPointers.Geometries[obj.GeometryRef.String]
 	obj.Model.Ptr = refPointers.Models[obj.Model.String]
 }
@@ -260,9 +260,9 @@ type Laser struct {
 	Protocols         []*LaserProtocol
 }
 
-func (obj *Laser) ResolveReference() {
+func (obj *Laser) ResolveReference(refPointers *ReferencePointers) {
 	obj.Emitter.Ptr = refPointers.Emitters[obj.Emitter.String]
-	obj.GeometryBase.ResolveReference()
+	obj.GeometryBase.ResolveReference(refPointers)
 }
 
 type LaserProtocol struct {
@@ -291,9 +291,9 @@ type WiringObject struct {
 	PinPatches        []*PinPatch
 }
 
-func (obj *WiringObject) ResolveReference() {
-	ResolveReferences(&obj.PinPatches)
-	obj.GeometryBase.ResolveReference()
+func (obj *WiringObject) ResolveReference(refPointers *ReferencePointers) {
+	ResolveReferences(refPointers, &obj.PinPatches)
+	obj.GeometryBase.ResolveReference(refPointers)
 }
 
 type PinPatch struct {
@@ -302,7 +302,7 @@ type PinPatch struct {
 	ToPin          int
 }
 
-func (obj *PinPatch) ResolveReference() {
+func (obj *PinPatch) ResolveReference(refPointers *ReferencePointers) {
 	obj.ToWiringObject.Ptr = refPointers.WiringObjects[obj.ToWiringObject.String]
 }
 
