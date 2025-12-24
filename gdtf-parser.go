@@ -33,6 +33,9 @@ func ParseGDTFZipReader(zipfile *zip.Reader, readMeshes bool, readThumbnail bool
 		fileMap[file.Name] = file
 	}
 
+	if fileMap["description.xml"] == nil {
+		return nil, fmt.Errorf("Invalid GDTF: missing description.xml")
+	}
 	xmlFile, err := fileMap["description.xml"].Open()
 	if err != nil {
 		return nil, err
