@@ -245,6 +245,9 @@ type ConvertToDestinationMapStruct[T any] interface {
 }
 
 func ParseList[Source ConvertToDestinationStruct[Destination], Destination any](source *[]Source) []*Destination {
+	if source == nil {
+		return []*Destination{}
+	}
 	var destination []*Destination = make([]*Destination, len(*source))
 	for index, element := range *source {
 		parsedElement := element.Parse()
@@ -254,6 +257,9 @@ func ParseList[Source ConvertToDestinationStruct[Destination], Destination any](
 }
 
 func ParseMap[Source ConvertToDestinationMapStruct[Destination], Destination any](source *[]Source) map[string]*Destination {
+	if source == nil {
+		return map[string]*Destination{}
+	}
 	destination := make(map[string]*Destination)
 	for _, element := range *source {
 		parsedElement := element.Parse()
