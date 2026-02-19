@@ -20,10 +20,11 @@ func (obj *GDTF) ResolveReference(refPointers *ReferencePointers) {
 }
 
 // Assemble a mesh based on entire geometry
-func (obj *GDTF) BuildMesh(dmxMode string) (*MeshTypes.Mesh, error) {
+func (obj *GDTF) BuildMesh(dmxMode string) ([]MeshModel, error) {
 	mode := obj.FixtureType.DMXModes[dmxMode]
 	if mode == nil {
 		return nil, fmt.Errorf("unknown DMX Mode '%s' in Fixture %s", dmxMode, obj.FixtureType.Name)
 	}
-	return obj.FixtureType.DMXModes[dmxMode].Geometry.Ptr.Ptr.(MeshGenerator).GenerateMesh(MeshTypes.IdentityMatrix()), nil
+	obj.FixtureType.DMXModes[dmxMode].MeshModels = obj.FixtureType.DMXModes[dmxMode].Geometry.Ptr.Ptr.GenerateMesh(MeshTypes.IdentityMatrix(), obj.FixtureType.DMXModes[dmxMode].MeshModels)
+	return obj.FixtureType.DMXModes[dmxMode].MeshModels, nil
 }

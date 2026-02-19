@@ -7,6 +7,7 @@ type DMXMode struct {
 	DMXChannels []*DMXChannel
 	Relations   []*Relation
 	FTMacros    []*FTMacro
+	MeshModels  []MeshModel
 }
 
 func (obj *DMXMode) CreateReferencePointer(refPointers *ReferencePointers) {
