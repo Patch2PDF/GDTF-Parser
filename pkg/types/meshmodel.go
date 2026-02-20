@@ -8,7 +8,7 @@ type MeshModel struct {
 	GeometryPtr  GeometryModel
 }
 
-func (obj *MeshModel) Copy() MeshModel {
+func (obj MeshModel) Copy() MeshModel {
 	return MeshModel{
 		Mesh:         obj.Mesh.Copy(),
 		GeometryType: obj.GeometryType,
