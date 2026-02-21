@@ -5,7 +5,8 @@ import (
 	"log"
 	"os"
 
-	GDTFMeshReader "github.com/Patch2PDF/GDTF-Mesh-Reader"
+	GDTFMeshReader "github.com/Patch2PDF/GDTF-Mesh-Reader/v2"
+	"github.com/Patch2PDF/GDTF-Mesh-Reader/v2/pkg/MeshTypes"
 	GDTFParser "github.com/Patch2PDF/GDTF-Parser"
 	STL "github.com/Patch2PDF/GDTF-Parser/examples/stl"
 )
@@ -25,11 +26,15 @@ func main() {
 	fmt.Printf("%+v\n", *gdtf)
 
 	// build gdtf model (by dmx mode)
-	mesh, err := gdtf.BuildMesh("32Ch")
+	models, err := gdtf.BuildMesh("32Ch")
 	if err != nil {
 		log.Fatal(err)
 	}
 	// write mesh as STL
+	mesh := &MeshTypes.Mesh{}
+	for _, entry := range models {
+		mesh.Add(&entry.Mesh)
+	}
 	f, _ := os.Create("Test.stl")
 	STL.WriteBinary(f, mesh)
 	f.Close()

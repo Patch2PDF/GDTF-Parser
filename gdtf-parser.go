@@ -11,8 +11,8 @@ import (
 	"log"
 	"path/filepath"
 
-	GDTFMeshReader "github.com/Patch2PDF/GDTF-Mesh-Reader"
-	"github.com/Patch2PDF/GDTF-Mesh-Reader/pkg/MeshTypes"
+	GDTFMeshReader "github.com/Patch2PDF/GDTF-Mesh-Reader/v2"
+	"github.com/Patch2PDF/GDTF-Mesh-Reader/v2/pkg/MeshTypes"
 	XMLTypes "github.com/Patch2PDF/GDTF-Parser/internal/types/gdtfxml"
 	Types "github.com/Patch2PDF/GDTF-Parser/pkg/types"
 )
