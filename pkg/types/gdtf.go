@@ -25,6 +25,9 @@ func (obj *GDTF) BuildMesh(dmxMode string) ([]MeshModel, error) {
 	if mode == nil {
 		return nil, fmt.Errorf("unknown DMX Mode '%s' in Fixture %s", dmxMode, obj.FixtureType.Name)
 	}
+	if len(obj.FixtureType.DMXModes[dmxMode].MeshModels) != 0 {
+		return obj.FixtureType.DMXModes[dmxMode].MeshModels, nil
+	}
 	obj.FixtureType.DMXModes[dmxMode].MeshModels = obj.FixtureType.DMXModes[dmxMode].Geometry.Ptr.Ptr.GenerateMesh(MeshTypes.IdentityMatrix(), obj.FixtureType.DMXModes[dmxMode].MeshModels)
 	return obj.FixtureType.DMXModes[dmxMode].MeshModels, nil
 }
