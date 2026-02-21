@@ -4,11 +4,11 @@ import (
 	"encoding/binary"
 	"io"
 
-	"github.com/Patch2PDF/GDTF-Mesh-Reader/pkg/MeshTypes"
+	"github.com/Patch2PDF/GDTF-Mesh-Reader/v2/pkg/MeshTypes"
 )
 
 // helper for `WriteBinary`
-func computeNormal(t *MeshTypes.Triangle) MeshTypes.Vector {
+func computeNormal(t MeshTypes.Triangle) MeshTypes.Vector {
 	// edge vectors
 	a := t.V1.Position.Sub(t.V0.Position)
 

@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	GDTFMeshReader "github.com/Patch2PDF/GDTF-Mesh-Reader"
-	"github.com/Patch2PDF/GDTF-Mesh-Reader/pkg/MeshTypes"
+	GDTFMeshReader "github.com/Patch2PDF/GDTF-Mesh-Reader/v2"
+	"github.com/Patch2PDF/GDTF-Mesh-Reader/v2/pkg/MeshTypes"
 	GDTFParser "github.com/Patch2PDF/GDTF-Parser"
 	STL "github.com/Patch2PDF/GDTF-Parser/examples/stl"
 )

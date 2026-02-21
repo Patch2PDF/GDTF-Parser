@@ -1,6 +1,6 @@
 package Types
 
-import "github.com/Patch2PDF/GDTF-Mesh-Reader/pkg/MeshTypes"
+import "github.com/Patch2PDF/GDTF-Mesh-Reader/v2/pkg/MeshTypes"
 
 // TODO: DMXValue Type
 // see gdtf https://www.gdtf.eu/gdtf/file-spec/file-format-definition/#attrtype-dmxvalue
