@@ -2,7 +2,7 @@ module github.com/Patch2PDF/GDTF-Parser
 
 go 1.25.4
 
-require github.com/Patch2PDF/GDTF-Mesh-Reader/v2 v2.1.0
+require github.com/Patch2PDF/GDTF-Mesh-Reader/v2 v2.2.0
 
 require (
 	github.com/google/go-cmp v0.7.0
